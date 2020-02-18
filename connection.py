@@ -14,3 +14,13 @@ def save_file(data_to_write: list, filename: str):
         for line in data_to_write:
             writer.writerow(line)
 
+
+# my propositions of functions
+
+
+def open_file_2(filename: str) -> list:
+    """
+    simpler variation of open_file function
+    """
+    with open(filename, newline='') as csvfile:
+        return list(csv.DictReader(csvfile))
