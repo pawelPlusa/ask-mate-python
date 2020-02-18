@@ -1,5 +1,6 @@
 import csv
 
+# TODO: We need csv file HEADER, to print (display) table headers for questions and answers
 
 def open_file(filename: str) -> list:
     with open(filename, newline='') as csvfile:
