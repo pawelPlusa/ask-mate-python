@@ -35,7 +35,7 @@ def show_questions(sorted_by,direction):
 
 
 
-@app.route("/question/<question_id>")
+@app.route("/questions/<question_id>")
 def show_answers(question_id):
     question = str(data_manager.QUESTIONS[int(question_id)]['title'])
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
