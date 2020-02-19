@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Edit question</title>
+</head>
+<body>
+<p>Edit question</p>
+<p>
+    <form action="/question/<question_id>/edit" method="post">
+        <label for="username">Question Title: </label>
+        <input type="text" name="username" id="username" required>
+    </form>
+</p>
+<p>
+
+    <form action="/question/<question_id>/edit" method="post">
+        <label for="question"> Question: </label>
+        <textarea rows="5" cols="50">Ask a question</textarea>
+    </form>
+</p>
+<p>
+    <form action="/question/<question_id>/edit" method="post">
+        <button> Send </button>
+    </form>
+</p>
+
+</body>
+</html>
