@@ -37,10 +37,12 @@ def show_questions(sorted_by,direction):
 
 @app.route("/questions/<question_id>")
 def show_answers(question_id):
-    question = str(data_manager.QUESTIONS[int(question_id)]['title'])
+    question_title = data_manager.QUESTIONS[int(question_id)]['title']
+    question_message = data_manager.QUESTIONS[int(question_id)]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
-    return render_template('questions.html', question=question, answers=answers)
+    return render_template('questions.html', question_title=question_title,
+                           question_message=question_message, answers=answers)
 
 
 if __name__ == "__main__":

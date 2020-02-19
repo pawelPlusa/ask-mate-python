@@ -9,7 +9,10 @@
 <!-- TODO: make sort by title, answer, number of votes, submission time -->
 
 <body>
-    <h3>{{ question }}</h3>
+    <h3>{{ question_title }}</h3>
+    <blockquote>{{ question_message }}</blockquote>
+    <hr>
+    <h4>Answers to this question:</h4>
     {%  if answers %}
 
         <table>
@@ -17,12 +20,12 @@
         <thead>
         <tr>
             {% for key in answers[0].keys() %}
-                {% if key == "submission_time" or key == "vote_number" or key == "message" %}
-                    <td><a href="/questions/<sorted_by>/<int:direction>">
-                        {{ key.replace('_', ' ').capitalize() }}</a>
-                    </td>
+                {% if key in ["submission_time", "vote_number", "message"] %}
+                    <th><a href="/questions/{{ key }}/<int:direction>">
+                        {{ key.replace('_', ' ').title() }}</a>
+                    </th>
                 {% elif key == "image" %}
-                    <td>{{ key.replace('_', ' ').capitalize() }}</td>
+                    <td>{{ key.replace('_', ' ').title() }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
@@ -33,7 +36,7 @@
             <tr>
                 <td> {{ line["submission_time"] }}</td>
                 <td> {{ line["vote_number"] }}</td>
-                <td> {{ line["message"] }}</td>
+                <td><a href="/answer">{{ line["message"] }}</a></td>
                 <td> {{ line["image"] }}</td>
             </tr>
         {% endfor %}
