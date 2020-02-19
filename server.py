@@ -17,24 +17,27 @@ import time
 
 app = Flask(__name__)
 
+# Paweł
 
 @app.route("/")
 def start():
-
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
     return render_template("index.html", sorted_questions=sorted_questions)
+
+# Łukasz
 
 @app.route("/list")
 def show_questions_list():
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
     return render_template("list.html", sorted_questions = sorted_questions )
 
+
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction):
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
     return render_template("list.html", sorted_questions=sorted_questions)
 
-
+# Tomek
 
 @app.route("/questions/<question_id>")
 def show_answers(question_id):
@@ -46,10 +49,23 @@ def show_answers(question_id):
                            question_message=question_message, answers=answers)
 
 
-@app.route("/answer")
-@app.route("/answer/<answer_id>")
-def add_answer(answer_id=None):
-    return 'Test'
+@app.route("/answer", methods=['GET', 'POST'])
+@app.route("/answer/<answer_id>", methods=['GET', 'POST'])
+def add_answer(answer_id=None, answer_message=None):
+
+    if request.method == 'POST':
+        data_to_save = data_manager.ANSWERS
+
+        if answer_id:
+            answer_message = data_manager.ANSWERS[int(answer_id)]['message']
+            data_to_save[int(answer_id)]['message'] = request.form['answer_m']
+        else:
+            data_to_save.append()
+
+
+        return redirect('/questions')
+
+    return render_template('answer.html', answer_id=answer_id, answer_message=answer_message)
 
 
 
@@ -58,3 +74,18 @@ if __name__ == "__main__":
         debug=True,
         port=8000
     )
+
+
+@app.route('/note', methods=['GET', 'POST'])
+def note_form():
+    if request.method == 'POST':
+        saved_data['note'] = request.form['note']
+        saved_data['edit_count'] = saved_data.get('edit_count', 0) + 1
+
+        with open('notes.txt', 'a', encoding='utf8') as file:
+            json.dump(saved_data, file, ensure_ascii=False)
+
+        return redirect('/')
+
+    return render_template('note.html', note=saved_data.get('note'))
+
