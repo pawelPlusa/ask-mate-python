@@ -14,6 +14,7 @@ from flask import Flask, render_template, request, redirect
 import data_manager
 import util
 import time
+import connection
 
 app = Flask(__name__)
 
@@ -49,24 +50,32 @@ def show_answers(question_id):
                            question_message=question_message, answers=answers)
 
 
-@app.route("/answer", methods=['GET', 'POST'])
-@app.route("/answer/<answer_id>", methods=['GET', 'POST'])
-def add_answer(answer_id=None, answer_message=None):
+@app.route("/answer/<question_id>", methods=['GET', 'POST'])
+@app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
+def add_answer(question_id, answer_id=None, answer_message=None):
 
     if request.method == 'POST':
         data_to_save = data_manager.ANSWERS
 
         if answer_id:
-            answer_message = data_manager.ANSWERS[int(answer_id)]['message']
             data_to_save[int(answer_id)]['message'] = request.form['answer_m']
+            data_to_save[int(answer_id)]['submission_time'] = int(time.time())
         else:
-            data_to_save.append()
+            data_to_save.append({'id': util.find_next_id(data_to_save),
+                                 'submission_time': int(time.time()),
+                                 'vote_number': 0,
+                                 'question_id': question_id,
+                                 'message': request.form['answer_m']
+                                 })
 
+        connection.save_file(data_to_save, data_manager.ANSWERS_FILE_PATH)
 
-        return redirect('/questions')
+        return redirect('/questions/' + question_id)
+
+    if answer_id:
+        answer_message = data_manager.ANSWERS[int(answer_id)]['message']
 
     return render_template('answer.html', answer_id=answer_id, answer_message=answer_message)
-
 
 
 if __name__ == "__main__":
