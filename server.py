@@ -74,18 +74,3 @@ if __name__ == "__main__":
         debug=True,
         port=8000
     )
-
-
-@app.route('/note', methods=['GET', 'POST'])
-def note_form():
-    if request.method == 'POST':
-        saved_data['note'] = request.form['note']
-        saved_data['edit_count'] = saved_data.get('edit_count', 0) + 1
-
-        with open('notes.txt', 'a', encoding='utf8') as file:
-            json.dump(saved_data, file, ensure_ascii=False)
-
-        return redirect('/')
-
-    return render_template('note.html', note=saved_data.get('note'))
-
