@@ -36,7 +36,7 @@
             <tr>
                 <td> {{ answer["submission_time"] }}</td>
                 <td> {{ answer["vote_number"] }}</td>
-                <td><a href="/answer/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
+                <td><a href="/answer/{{ answer["question_id"] }}/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
                 <td> {{ answer["image"] }}</td>
             </tr>
         {% endfor %}
@@ -49,7 +49,7 @@
     {% endif %}
 
 <hr>
-<a href="/answer">Add answer</a>
+<a href="/answer/{{ answers[0]["question_id"] }}">Add answer</a>
 <p></p>
 <a href="/list">Back to questions list</a>
 <p></p>
