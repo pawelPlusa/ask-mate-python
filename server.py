@@ -23,12 +23,12 @@ def start():
 
 @app.route("/list")
 def show_questions_list():
-    sorted_questions = sorted(QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
     return render_template("list.html", sorted_questions = sorted_questions )
 
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction):
-    sorted_questions = sorted(QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
     return render_template("list.html", sorted_questions=sorted_questions)
 
 
