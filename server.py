@@ -19,7 +19,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def start():
-    return render_template("index.html")
+
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    return render_template("index.html", sorted_questions=sorted_questions)
 
 @app.route("/list")
 def show_questions_list():
