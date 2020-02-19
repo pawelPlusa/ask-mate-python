@@ -32,12 +32,12 @@
         </thead>
 
         <tbody>
-        {% for line in answers %}
+        {% for answer in answers %}
             <tr>
-                <td> {{ line["submission_time"] }}</td>
-                <td> {{ line["vote_number"] }}</td>
-                <td><a href="/answer">{{ line["message"] }}</a></td>
-                <td> {{ line["image"] }}</td>
+                <td> {{ answer["submission_time"] }}</td>
+                <td> {{ answer["vote_number"] }}</td>
+                <td><a href="/answer/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
+                <td> {{ answer["image"] }}</td>
             </tr>
         {% endfor %}
         </tbody>

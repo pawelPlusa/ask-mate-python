@@ -13,6 +13,7 @@ Answers format:
 from flask import Flask, render_template, request, redirect
 import data_manager
 import util
+import time
 
 app = Flask(__name__)
 
@@ -43,6 +44,13 @@ def show_answers(question_id):
 
     return render_template('questions.html', question_title=question_title,
                            question_message=question_message, answers=answers)
+
+
+@app.route("/answer")
+@app.route("/answer/<answer_id>")
+def add_answer(answer_id=None):
+    return 'Test'
+
 
 
 if __name__ == "__main__":
