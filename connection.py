@@ -6,7 +6,7 @@ def open_file_2(filename: str) -> list:
     simpler variation of open_file function
     """
     with open(filename, newline='') as csvfile:
-        return list(csv.DictReader(csvfile))
+        return [(dict(row)) for row in csv.DictReader(csvfile)]
 
 
 def save_file(data_to_write: list, filename: str):

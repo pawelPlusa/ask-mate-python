@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Question list</title>
+</head>
+<body>
+<p>Question list: </p>
+
+<table>
+    <tr>
+        {% for key in sorted_questions[0].keys():%}
+        <td>{{key}}</td>
+        {% endfor %}
+    </tr>
+    {% for line in sorted_questions: %}
+        <tr>
+            <td> {{line["id"]}}</td>
+            <td> {{line["submission_time"]}}</td>
+            <td> {{line["view_number"]}}</td>
+            <td> {{line["vote_number"]}}</td>
+            <td>
+                <a href="/questions/{{line["id"]}}"> {{line["title"]}}</a>
+            </td>
+            <td> {{line["message"]}}</td>
+            <td> {{line["image"]}}</td>
+        </tr>
+    {% endfor %}
+</table>
+<a href="/note"> Add question </a>
+<p></p>
+<a href="/"> Back to main page </a>
+</body>
+</html>
