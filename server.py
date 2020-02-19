@@ -32,7 +32,7 @@ def show_questions(sorted_by,direction):
     return render_template("list.html", sorted_questions=sorted_questions)
 
 
-@app.route("/question/<question>?<sorted=date>")
+@app.route("/question/<question>")
 def show_answers(question_id, sort='date', reverse=True):
 
     return render_template('list_comments.html', question)

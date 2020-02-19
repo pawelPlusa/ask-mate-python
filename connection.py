@@ -1,7 +1,7 @@
 import csv
 
 
-def open_file_2(filename: str) -> list:
+def open_file(filename: str) -> list:
     """
     simpler variation of open_file function
     """
