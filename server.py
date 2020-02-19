@@ -25,19 +25,22 @@ def start():
 
 @app.route("/list")
 def show_questions_list():
-    sorted_questions = sorted(QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
     return render_template("list.html", sorted_questions = sorted_questions )
 
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction):
-    sorted_questions = sorted(QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
     return render_template("list.html", sorted_questions=sorted_questions)
 
 
-@app.route("/question/<question>")
-def show_answers(question_id, sort='date', reverse=True):
 
-    return render_template('list_comments.html', question)
+@app.route("/question/<question_id>")
+def show_answers(question_id):
+    question = str(data_manager.QUESTIONS[int(question_id)]['title'])
+    answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
+
+    return render_template('questions.html', question=question, answers=answers)
 
 
 if __name__ == "__main__":
