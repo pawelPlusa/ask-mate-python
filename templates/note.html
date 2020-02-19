@@ -8,20 +8,20 @@
 <p>Edit question</p>
 <p>
     <form action="/question/<question_id>/edit" method="post">
-        <label for="username">Question Title: </label>
-        <input type="text" name="username" id="username" required>
+        <label for="question_title">Question Title: </label>
+        <input type="text" name="question_title" id="question_title" required>
     </form>
 </p>
 <p>
 
     <form action="/question/<question_id>/edit" method="post">
         <label for="question"> Question: </label>
-        <textarea rows="5" cols="50">Ask a question</textarea>
+        <textarea name="question" id="question" rows="5" cols="50">Ask a question</textarea>
     </form>
 </p>
 <p>
     <form action="/question/<question_id>/edit" method="post">
-        <button> Send </button>
+        <button type="submit"> Send </button>
     </form>
 </p>
 
