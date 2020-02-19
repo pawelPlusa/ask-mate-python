@@ -7,7 +7,22 @@
 </head>
 
 <body>
-    <h1>{{ question }}</h1>
-
+    <h1>{{ question['title'] }}</h1>
+    <div>{{ question['message']}}</div>
+    <table>
+        <thead>
+                <td>Time</td>
+                <td>Votes number</td>
+                <td>Answer</td>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+                <tr><td>{{ answer['submission time'] }}</td>
+                    <td>{{ answer['vote number'] }}</td>
+                    <td>{{ answer['message'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
