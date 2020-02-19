@@ -8,11 +8,13 @@
 <p>Question list: </p>
 
 <table>
+    <thead>
     <tr>
-        {% for key in sorted_questions[0].keys():%}
-        <td>{{key}}</td>
+        {% for header in sorted_questions[0].keys()%}
+            <th>{{(header.replace("_"," ").strip().title())}}</th>
         {% endfor %}
     </tr>
+    </thead>
     {% for line in sorted_questions: %}
         <tr>
             <td> {{line["id"]}}</td>
