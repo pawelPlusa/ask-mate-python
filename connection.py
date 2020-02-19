@@ -1,10 +1,12 @@
 import csv
 
-# TODO: We need csv file HEADER, to print (display) table headers for questions and answers
 
-def open_file(filename: str) -> list:
+def open_file_2(filename: str) -> list:
+    """
+    simpler variation of open_file function
+    """
     with open(filename, newline='') as csvfile:
-        return [(dict(row)) for row in csv.DictReader(csvfile)]
+        return list(csv.DictReader(csvfile))
 
 
 def save_file(data_to_write: list, filename: str):
@@ -14,14 +16,3 @@ def save_file(data_to_write: list, filename: str):
         writer.writeheader()
         for line in data_to_write:
             writer.writerow(line)
-
-
-# my propositions of functions
-
-
-def open_file_2(filename: str) -> list:
-    """
-    simpler variation of open_file function
-    """
-    with open(filename, newline='') as csvfile:
-        return list(csv.DictReader(csvfile))

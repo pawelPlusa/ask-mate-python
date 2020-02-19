@@ -1,11 +1,11 @@
 """
 Questions format:
-[{id: int, submission_time: time_stamp (int), view_number: int, vote_number: int, title: str, message: str, image: url(str)},
+[{id: str, submission_time: time_stamp (int), view_number: int, vote_number: int, title: str, message: str, image: url(str)},
 ...
 ]
 
 Answers format:
-[{id: int,submission_time: time_stamp (int), vote_number: int, question_id: int, message: str, image: url(str)},
+[{id: str,submission_time: time_stamp (int), vote_number: int, question_id: int, message: str, image: url(str)},
 ...
 ]
 """

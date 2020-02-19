@@ -11,4 +11,4 @@ def find_answers_by_question(question_id: str, answers_file: list) -> list:
     if there is no question with given id, returns empty list
     """
 
-    return [single_answer for single_answer in answers_file if single_answer["id"] == question_id]
+    return [single_answer for single_answer in answers_file if single_answer["question_id"] == question_id]
