@@ -6,38 +6,51 @@
     <title>Title</title>
 </head>
 
+<!-- TODO: make sort by title, answer, number of votes, submission time -->
+
 <body>
-    <h1>{{ question }}</h1>
+    <h3>{{ question }}</h3>
     {%  if answers %}
 
         <table>
+
         <thead>
         <tr>
             {% for key in answers[0].keys() %}
-            <td>{{ key.replace('_', ' ').capitalize() }}</td>
+                {% if key == "submission_time" or key == "vote_number" or key == "message" %}
+                    <td><a href="/questions/<sorted_by>/<int:direction>">
+                        {{ key.replace('_', ' ').capitalize() }}</a>
+                    </td>
+                {% elif key == "image" %}
+                    <td>{{ key.replace('_', ' ').capitalize() }}</td>
+                {% endif %}
             {% endfor %}
         </tr>
         </thead>
+
+        <tbody>
         {% for line in answers %}
             <tr>
-                <td> {{line["id"]}}</td>
-                <td> {{line["submission_time"]}}</td>
-                <td> {{line["vote_number"]}}</td>
-                <td> {{line["question id"]}}</td>
-                <td> <a href="/answer">{{line["message"]}}</a></td>
-                <td> {{line["image"]}}</td>
+                <td> {{ line["submission_time"] }}</td>
+                <td> {{ line["vote_number"] }}</td>
+                <td> {{ line["message"] }}</td>
+                <td> {{ line["image"] }}</td>
             </tr>
         {% endfor %}
+        </tbody>
+
         </table>
 
     {% else %}
-        <h3>There are no answers to selected question</h3>
+        <h5>There are no answers to selected question</h5>
     {% endif %}
 
+<hr>
 <a href="/answer">Add answer</a>
 <p></p>
 <a href="/list">Back to questions list</a>
 <p></p>
 <a href="/">Back to main page</a>
+
 </body>
 </html>
