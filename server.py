@@ -41,16 +41,21 @@ def show_questions(sorted_by,direction):
 # Tomek
 
 @app.route("/questions/<question_id>")
-def show_answers(question_id):
+@app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
+def show_answers(question_id, sorted_by=None, direction=0):
     question_id = data_manager.QUESTIONS[int(question_id)]['id']
     question_title = data_manager.QUESTIONS[int(question_id)]['title']
     question_message = data_manager.QUESTIONS[int(question_id)]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
-    print(answers)
+
+    if sorted_by:
+        answers.sort(key=lambda item: item[sorted_by], reverse=direction)
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=util.change_time_format(answers))
+                           question_message=question_message, answers=util.change_time_format(answers),
+                           direction=direction)
+
 
 
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
