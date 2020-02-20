@@ -141,8 +141,6 @@ def add_question(message=None, title=None, question_id=None):
 
         if not question_id:
             question_id = (util.find_next_id(data_to_save))
-            print(question_id)
-            print(data_to_save)
             data_to_save.append({'id': question_id,
                                  'submission_time': str(int(time.time())),
                                  'view_number': '0',
