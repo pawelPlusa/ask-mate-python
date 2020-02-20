@@ -129,13 +129,16 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 @app.route("/note/<question_id>", methods=['GET', 'POST'])
 def add_question(question_message=None, question_id=None):
 
-    if request.method == 'POST':
+    if request.method == 'GET' and question_id:
+        title = data_manager.QUESTIONS[int(question_id)]["title"]
+        message = data_manager.QUESTIONS[int(question_id)]["message"]
+        return render_template('note.html', message=message, title=title, question_id=question_id)
+
+    elif request.method == 'POST':
         data_to_save = data_manager.QUESTIONS
 
         if not question_id:
             question_id = (util.find_next_id(data_to_save))
-            print(question_id)
-            print(data_to_save)
             data_to_save.append({'id': question_id,
                                  'submission_time': str(int(time.time())),
                                  'view_number': '0',
