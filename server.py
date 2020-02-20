@@ -26,6 +26,8 @@ def start():
 
     return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:])
+
+
 @app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/<question_id>")
 def delete(question_id=None, confirmation=None, status=None):
@@ -43,15 +45,14 @@ def delete(question_id=None, confirmation=None, status=None):
 # Łukasz
 
 @app.route("/list")
-
 def show_questions_list():
-    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
 
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction):
-    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse=direction)
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
 # Tomek
@@ -59,14 +60,12 @@ def show_questions(sorted_by,direction):
 @app.route("/questions/<question_id>")
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
 @app.route("/questions/<question_id>/<vote>")
-
 def show_answers(question_id, sorted_by=None, direction=0, vote=None):
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id) #This is important
-    # question_title = data_manager.QUESTIONS[int(question_id)]['title']
-    # question_message = data_manager.QUESTIONS[int(question_id)]['message']
+    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+    question_title = data_manager.QUESTIONS[int(question_id)]['title']
+    question_message = data_manager.QUESTIONS[int(question_id)]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
-    """That part is important"""
     if vote:
         votes_no = int(data_manager.QUESTIONS[question_index]["vote_number"])
         if vote == "vote_down" and votes_no > 0:
@@ -76,10 +75,6 @@ def show_answers(question_id, sorted_by=None, direction=0, vote=None):
         data_manager.QUESTIONS[int(question_index)]["vote_number"] = votes_no
         connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
         return redirect("/list", code=303)
-    return "problem"
-
-
-
 
     if sorted_by:
         answers.sort(key=lambda item: item[sorted_by], reverse=direction)
