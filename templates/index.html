@@ -12,33 +12,30 @@
 <a href="/questions"> Add question </a>
 </div>
     <h2>Last three questions were:</h2>
-    <p>{{ headers }}</p>
-<table class="table_all">
-    <thead>
-    <tr>
-        {% for header in sorted_questions[0].keys()%}
-            <th>{{(header.replace("_"," ").strip().title())}}</th>
-        {% endfor %}
-    </tr>
-    </thead>
- <tbody>
-{% for dict in sorted_questions %}
-            <tr>  </tr>
-                 {% for key,value in dict.items() %}
-                <td>  {% if key.strip() == "title": %}
 
-                                <a href="/questions/{{dict['id']}}">{{value}}</a>
-                                {% else %}
-                    {{value}}
-                </td>
-{% endif %}
-        {% endfor %}
-
+    <table class="table_all">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                    <th>{{(header.replace("_"," ").strip().title())}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for dict in sorted_questions %}
+                <tr>  </tr>
+                     {% for key,value in dict.items() %}
+                        {% if key in headers %}
+                            <td>{% if key.strip() == "title": %}
+                                    <a href="/questions/{{dict['id']}}">{{value}}</a>
+                                    {% else %}
+                                {{value}}
+                            </td>
+                                {% endif %}
+                        {% endif %}
+                    {% endfor %}
             {% endfor %}
-
-
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </body>
 </html>

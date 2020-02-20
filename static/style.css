@@ -2,6 +2,27 @@
 
     color: black;
 }
+.table_list {
+
+    font-family: Ubuntu;
+    background: lightgrey;
+    color: black;
+    border-radius: .4em;
+    overflow: hidden;
+    border-top: 20px solid #ddd;
+
+}
+.button_vote {
+    font-size: 10px;
+    height: 2em;
+    width: 4em;
+    float: right;
+    margin: auto;
+    padding: 0px;
+    text-align: center;
+
+}
+
 
 table {
     font-size: 0.8em;
@@ -20,7 +41,7 @@ h1 {
 
                   }
 
-}
+
 th, td {
     text-align: left;
     padding: 0.5em;
@@ -49,11 +70,29 @@ tr {
 
 a:link {
     color: #11557C;
-    margin: 0.7em;
+
+    font-weight: bolder
 
 }
 
 a:visited {
     color: midnightblue;
+    font-weight: bolder
 
+}
+
+.container {
+    max-width: 500px;
+    width: 80%;
+    margin: 20px auto;
+    text-align: justify;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.delete_button {
+
+    padding-right: 10px;
+    padding-left:  10px;
 }
