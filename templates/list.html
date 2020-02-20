@@ -29,26 +29,28 @@
         <tr>
             <td> {{line["submission_time"]}}</td>
             <td> {{line["view_number"]}} </td>
-            <td> {{line["vote_number"]}} <a class="vote_button" href="/questions/{{line["id"]}}/vote_up"> <img src='/static/images/ar_up.png' alt="up_arrow" width="15px"></a>
-                <a class="vote_button" href="/questions/{{line["id"]}}/vote_down"> <img src='/static/images/ar_down.png' alt="down_arrow" width="15px"></a></td>
+            <td> {{line["vote_number"]}} <a class="vote_button" href="/questions/{{line["id"]}}/vote_up">
+                <img src='/static/images/ar_up.png' alt="up_arrow" width="15px"></a>
+                <a class="vote_button" href="/questions/{{line["id"]}}/vote_down">
+                    <img src='/static/images/ar_down.png' alt="down_arrow" width="15px"></a>
+            </td>
             <td>
                 <a href="/questions/{{line["id"]}}"> {{line["title"]}}</a>
             </td>
             <td> {{line["message"]}}</td>
             <td> {{line["image"]}}</td>
 
-            <td><a href="/delete/{{line["id"]}}"> <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a></td>
+            <td><a href="/delete/{{line["id"]}}">
+                <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a>
+            </td>
 
 
         </tr>
     {% endfor %}
 </table>
-<a href="/add"> Add question </a>
+<a href="/note"> Add question </a>
 <p></p>
 <a href="/"> Back to main page </a>
-
-
-
 
 </body>
 </html>

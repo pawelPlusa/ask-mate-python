@@ -75,7 +75,7 @@ def show_answers(question_id, sorted_by=None, direction=0, vote=None):
             votes_no -= 1
         elif vote == "vote_up":
             votes_no += 1
-        data_manager.QUESTIONS[int(question_index)]["vote_number"] = votes_no
+        data_manager.QUESTIONS[int(question_index)]["vote_number"] = str(votes_no)
         connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
 
         return redirect("/list", code=303)
@@ -101,11 +101,11 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
         if answer_id:
             data_to_save[int(answer_id)]['message'] = request.form['answer_m']
-            data_to_save[int(answer_id)]['submission_time'] = int(time.time())
+            data_to_save[int(answer_id)]['submission_time'] = str(int(time.time()))
         else:
             data_to_save.append({'id': util.find_next_id(data_to_save),
-                                 'submission_time': int(time.time()),
-                                 'vote_number': 0,
+                                 'submission_time': str(int(time.time())),
+                                 'vote_number': '0',
                                  'question_id': question_id,
                                  'message': request.form['answer_m']
                                  })
@@ -124,39 +124,34 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
 # Łukasz
 
-@app.route("/add", methods=['GET', 'POST'])
-@app.route("/add/<question_id>", methods=['GET', 'POST'])
-def add_question(question_message=None, question_id=None, title_m=None):
+@app.route("/note", methods=['GET', 'POST'])
+@app.route("/note/<question_id>", methods=['GET', 'POST'])
+def add_question(question_message=None, question_id=None):
 
     if request.method == 'POST':
         data_to_save = data_manager.QUESTIONS
 
         if not question_id:
-            question_title = request.form['title_m']
+            question_id = (util.find_next_id(data_to_save))
             print(question_id)
-            question_id = (util.generete_new_id(data_manager.QUESTIONS))
-            print(question_id)
-            print(data_manager.QUESTIONS)
-            data_to_save.append({'id': int(question_id),
-                                 'submission_time': int(time.time()),
-                                 'view_number': 0,
-                                 'vote_number': 0,
+            print(data_to_save)
+            data_to_save.append({'id': question_id,
+                                 'submission_time': str(int(time.time())),
+                                 'view_number': '0',
+                                 'vote_number': '0',
                                  'message': request.form['question_m'],
                                  'title': request.form['title_m']
                                  })
         else:
-
             data_to_save[int(question_id)]['message'] = request.form['question_m']
-            data_to_save[int(question_id)]['submission_time'] = int(time.time())
+            data_to_save[int(question_id)]['submission_time'] = str(int(time.time()))
             data_to_save[int(question_id)]['title'] = request.form['title_m']
-        print("doszlo tu")
+
         connection.save_file(data_to_save, data_manager.QUESTION_FILE_PATH)
 
         return redirect('/list')
-    else:
-        question_id = util.generete_new_id(data_manager.QUESTIONS)
 
-    return render_template('note.html', question_id=question_id, question_message=question_message )
+    return render_template('note.html', question_id=question_id, question_message=question_message)
 
 
 if __name__ == "__main__":
