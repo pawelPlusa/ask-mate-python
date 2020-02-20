@@ -55,6 +55,20 @@ def find_index_of_dict_by_id(dict_list, given_id):
         index_number += 1
     return None
 
+
+def purge_answer_list(answers, question_id):
+    """
+    Takes a list of dictionaries and returns other
+     list without those related to given question_id
+    """
+
+    purged_answers = []
+    for answer in answers:
+        if answer["question_id"] != str(question_id):
+            purged_answers.append(answer)
+    return purged_answers
+
+
 # New function in test stage
 def generete_new_id(table):
     print(max([int(line["id"]) for line in table]))
