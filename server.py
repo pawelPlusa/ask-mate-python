@@ -57,10 +57,10 @@ def show_answers(question_id, sorted_by=None, direction=0):
                            direction=direction)
 
 
-
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
+    question_title = data_manager.QUESTIONS[int(question_id)]['title']
 
     if request.method == 'POST':
         data_to_save = data_manager.ANSWERS
@@ -83,7 +83,9 @@ def add_answer(question_id, answer_id=None, answer_message=None):
     if answer_id:
         answer_message = data_manager.ANSWERS[int(answer_id)]['message']
 
-    return render_template('answer.html', answer_id=answer_id, answer_message=answer_message)
+    return render_template('answer.html',
+                           answer_id=answer_id, answer_message=answer_message,
+                           question_title=question_title)
 
 
 if __name__ == "__main__":

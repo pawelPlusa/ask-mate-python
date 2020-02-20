@@ -32,7 +32,7 @@ h2 {
 }
 
 .table_all {
-    font-family: Ubuntu;
+    font-family: Atari-Classic;
 
     background: lightgrey;
     color: black;
@@ -46,10 +46,7 @@ tr {
 
   }
 
-a {
-    color: orangered;
-    font-weight: bolder;
-}
+
 a:link {
     color: #11557C;
     margin: 0.7em;
@@ -60,4 +57,3 @@ a:visited {
     color: midnightblue;
 
 }
-

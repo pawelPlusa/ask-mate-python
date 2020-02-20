@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='style.css') }}">
 </head>
-
-<!-- TODO: make sort by title, answer, number of votes, submission time -->
 
 <body>
     <h3><a href="/add/{{ question_id }}">{{ question_title }}<a/></h3>

@@ -4,14 +4,17 @@
 <head>
     <meta charset="utf-8">
     <title>{{ 'Edit' if answer_id else 'Add' }} answer</title>
+    <link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-    <h3>{{ 'Edit' if answer_id else 'Add' }} answer</h3>
+    <h3>{{ 'Edit' if answer_id else 'Add' }} answer for question:</h3>
+    <blockquote>{{ question_title }}</blockquote>
 
     <form method="post">
-    <label for="answer-add-edit">Your answer:</label>
+    <p>Your answer:</p>
     <textarea id="answer-add-edit" name="answer_m" rows="8" cols="40">{{ answer_message if answer_message }}</textarea>
+        <br>
     <button type="submit">{{ 'Edit' if answer_id else 'Add' }}</button>
     </form>
 
