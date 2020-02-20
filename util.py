@@ -45,3 +45,13 @@ def find_next_id(contents_list: list) -> str:
         number += 1
     return str(number)
 
+def find_index_of_dict_by_id(dict_list, given_id):
+    index_number = 0
+    for dict in dict_list:
+        if dict["id"] == given_id:
+            print(f"found id {index_number}")
+            return index_number
+        index_number += 1
+    return None
+
+

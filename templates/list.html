@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Question list</title>
+    <link type="text/css" rel="stylesheet" href='{{ url_for("static", filename="style.css") }}'>
+    <meta charset="UTF-8">
+    <title>Question list</title>
 </head>
 <body>
 <p>Question list: </p>
@@ -10,7 +11,7 @@
 <!-- TODO: make sort by title, message, number of views, number of votres, submission time -->
 <!-- TODO: remove id from list> -->
 
-<table>
+<table class="table_list">
     <thead>
     <tr>
         {% for header in sorted_questions[0].keys()%}
@@ -22,18 +23,27 @@
         <tr>
             <td> {{line["id"]}}</td>
             <td> {{line["submission_time"]}}</td>
-            <td> {{line["view_number"]}}</td>
-            <td> {{line["vote_number"]}}</td>
+            <td> {{line["view_number"]}} </td>
+            <td> {{line["vote_number"]}} <a class="vote_button" href="/questions/{{line["id"]}}/vote_up"> <img src='/static/images/ar_up.png' alt="up_arrow" width="15px"></a>
+                <a class="vote_button" href="/questions/{{line["id"]}}/vote_down"> <img src='/static/images/ar_down.png' alt="down_arrow" width="15px"></a></td>
             <td>
                 <a href="/questions/{{line["id"]}}"> {{line["title"]}}</a>
             </td>
             <td> {{line["message"]}}</td>
             <td> {{line["image"]}}</td>
+
+            <td><a href="/delete/{{line["id"]}}"> <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a></td>
+
+
         </tr>
     {% endfor %}
 </table>
 <a href="/note"> Add question </a>
 <p></p>
 <a href="/"> Back to main page </a>
+
+
+
+
 </body>
 </html>
