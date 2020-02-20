@@ -29,7 +29,7 @@ def start():
 
 @app.route("/list")
 def show_questions_list():
-    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: int(i['submission_time']), reverse=1)
     return render_template("list.html", sorted_questions = sorted_questions )
 
 
@@ -81,33 +81,46 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
     return render_template('answer.html', answer_id=answer_id, answer_message=answer_message)
 
-@app.route("/questions", methods=['GET', 'POST'])
-@app.route("/questions/<question_id>", methods=['GET', 'POST'])
-def add_question(question_massage=None):
-    question_id = util.find_next_id(data_manager.QUESTIONS)
+@app.route("/add", methods=['GET', 'POST'])
+@app.route("/add/<question_id>", methods=['GET', 'POST'])
+def add_question(question_message=None, question_id=None, title_m=None):
+
+
+
 
     if request.method == 'POST':
         data_to_save = data_manager.QUESTIONS
 
-        if question_id:
+        if not question_id:
+            question_title = request.form['title_m']
+            print(question_id)
+            question_id = (util.generete_new_id(data_manager.QUESTIONS))
+            print(question_id)
+            print(data_manager.QUESTIONS)
+            data_to_save.append({'id': int(question_id),
+                                 'submission_time': int(time.time()),
+                                 'view_number': 0,
+                                 'vote_number': 0,
+                                 'message': request.form['question_m'],
+                                 'title': request.form['title_m']
+                                 })
+        else:
+
             data_to_save[int(question_id)]['message'] = request.form['question_m']
             data_to_save[int(question_id)]['submission_time'] = int(time.time())
-        else:
-            data_to_save.append({'id': util.find_next_id(data_to_save),
-                                 'submission_time': int(time.time()),
-                                 'vote_number': 0,
-                                 'question_id': question_id,
-                                 'message': request.form['question_m']
-                                 })
+            data_to_save[int(question_id)]['title'] = request.form['title_m']
+        print("doszlo tu")
+        connection.save_file(data_to_save, data_manager.QUESTION_FILE_PATH)
 
-        connection.save_file(data_to_save, data_manager.ANSWERS_FILE_PATH)
+        return redirect('/list')
+    else:
+        question_id = util.generete_new_id(data_manager.QUESTIONS)
 
-        return redirect('/questions/' + question_id)
 
-    if answer_id:
-        question_massage = data_manager.QUESTIONS[int(question_id)]['message']
 
-    return render_template('note.html', question_id=question_id, question_massage=question_massage)
+
+
+    return render_template('note.html', question_id=question_id, question_message=question_message )
 
 
 

@@ -28,3 +28,9 @@ def find_next_id(contents_list: list) -> str:
             return str(number)
         number += 1
     return str(number)
+
+def generete_new_id(table):
+    print(max([int(line["id"]) for line in table]))
+    return max([int(line["id"]) for line in table]) + 1
+
+
