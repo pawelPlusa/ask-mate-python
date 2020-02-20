@@ -2,9 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ASK MATE</title>
 </head>
 <body>
-<p>Index</p>
+<h1>Welcome to ASK MATE</h1>
+<a href="/list"> Show all questions </a><br>
+<a href="/questions"> Add question </a>
+<h2>Last three questions were:</h2>
+
+<table>
+    <thead>
+    <tr>
+        {% for header in sorted_questions[0].keys()%}
+            <th>{{(header.replace("_"," ").strip().title())}}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+ <tbody>
+{% for dict in sorted_questions %}
+            <tr>  </tr>
+                 {% for key,value in dict.items() %}
+                <td>  {% if key.strip() == "title": %}
+
+                                <a href="/questions/{{dict['id']}}">{{value}}</a>
+                                {% else %}
+                    {{value}}
+                </td>
+{% endif %}
+        {% endfor %}
+
+            {% endfor %}
+
+
+
+    </tbody>
+</table>
 </body>
 </html>

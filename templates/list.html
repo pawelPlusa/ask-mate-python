@@ -7,15 +7,25 @@
 <body>
 <p>Question list: </p>
 
+<!-- TODO: make sort by title, message, number of views, number of votres, submission time -->
+<!-- TODO: remove id from list> -->
+
 <table>
+    <thead>
     <tr>
-        {% for key in sorted_questions[0].keys():%}
-        <td>{{key}}</td>
+        {% for key in sorted_questions[0].keys()%}
+            {% if key == "submission_time" or key == "vote_number" or key == "message" or key == "view_number" or key == "title" %}
+             <td><a href="/list/{{key}}/1">
+                        {{ key.replace('_', ' ').capitalize() }}</a>
+             </td>
+            {% elif key == "message" or key == "image" %}
+            <th> {{key}} </th>
+            {% endif %}
         {% endfor %}
     </tr>
+    </thead>
     {% for line in sorted_questions: %}
         <tr>
-            <td> {{line["id"]}}</td>
             <td> {{line["submission_time"]}}</td>
             <td> {{line["view_number"]}}</td>
             <td> {{line["vote_number"]}}</td>

@@ -1,29 +1,20 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-    <title>Edit question</title>
-</head>
-<body>
-<p>Edit question</p>
-<p>
-    <form action="/question/<question_id>/edit" method="post">
-        <label for="question_title">Question Title: </label>
-        <input type="text" name="question_title" id="question_title" required>
-    </form>
-</p>
-<p>
 
-    <form action="/question/<question_id>/edit" method="post">
-        <label for="question"> Question: </label>
-        <textarea name="question" id="question" rows="5" cols="50">Ask a question</textarea>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ 'Edit' if answer_id else 'Add' }} question</title>
+</head>
+
+<body>
+    <h3>{{ 'Edit' if answer_id else 'Add' }} question</h3>
+
+    <form anction="/question" method="post">
+    <label for="question-add-edit">Your question:</label>
+    <textarea id="question-add-edit" name="question_m" rows="8" cols="40">{{ question_message if question_message }}</textarea>
+    <button type="submit">{{ 'Edit' if question_id else 'Add' }}</button>
     </form>
-</p>
-<p>
-    <form action="/question/<question_id>/edit" method="post">
-        <button type="submit"> Send </button>
-    </form>
-</p>
 
 </body>
 </html>
