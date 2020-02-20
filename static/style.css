@@ -1,3 +1,9 @@
+body {
+    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+    background-color: #E6E6FA;
+
+}
+
 .table_body {
 
     color: black;
@@ -10,6 +16,7 @@
     border-radius: .4em;
     overflow: hidden;
     border-top: 20px solid #ddd;
+
 
 }
 .button_vote {
@@ -40,7 +47,11 @@ h1 {
        margin: 0.5em;
 
                   }
-
+tr {
+    text-align: center;
+    border-bottom: black;
+    border: #9C1A1C;
+}
 
 th, td {
     text-align: left;
@@ -57,9 +68,10 @@ h2 {
 
     background: lightgrey;
     color: black;
-    border-radius: .4em;
+    border-radius: .8em;
     overflow: hidden;
     border-top: 20px solid #ddd;
+    min-height: 1200px;
 }
 tr {
     border-top: 4px solid #ddd;

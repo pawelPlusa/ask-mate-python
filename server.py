@@ -62,8 +62,8 @@ def show_questions(sorted_by,direction):
 
 def show_answers(question_id, sorted_by=None, direction=0, vote=None):
     question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id) #This is important
-    # question_title = data_manager.QUESTIONS[int(question_id)]['title']
-    # question_message = data_manager.QUESTIONS[int(question_id)]['message']
+    question_title = data_manager.QUESTIONS[int(question_id)]['title']
+    question_message = data_manager.QUESTIONS[int(question_id)]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
     """That part is important"""
@@ -76,7 +76,6 @@ def show_answers(question_id, sorted_by=None, direction=0, vote=None):
         data_manager.QUESTIONS[int(question_index)]["vote_number"] = votes_no
         connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
         return redirect("/list", code=303)
-    return "problem"
 
 
 
