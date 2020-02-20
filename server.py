@@ -33,10 +33,9 @@ def start():
 def delete(question_id=None, confirmation=None, status=None):
 
     if confirmation:
-        data_manager.ANSWERS = util.purge_answer_list(data_manager.ANSWERS, question_id)
         del data_manager.QUESTIONS[util.find_index_of_dict_by_id(data_manager.QUESTIONS,question_id)]
         connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
-        connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
+
         return render_template("delete.html", status=1)
     else:
         return render_template("delete.html", question_id=question_id)
@@ -132,6 +131,7 @@ def add_question(question_message=None, question_id=None):
     if request.method == 'GET' and question_id:
         title = data_manager.QUESTIONS[int(question_id)]["title"]
         message = data_manager.QUESTIONS[int(question_id)]["message"]
+
         return render_template('note.html', message=message, title=title, question_id=question_id)
 
     elif request.method == 'POST':
@@ -139,6 +139,8 @@ def add_question(question_message=None, question_id=None):
 
         if not question_id:
             question_id = (util.find_next_id(data_to_save))
+            print(question_id)
+            print(data_to_save)
             data_to_save.append({'id': question_id,
                                  'submission_time': str(int(time.time())),
                                  'view_number': '0',
