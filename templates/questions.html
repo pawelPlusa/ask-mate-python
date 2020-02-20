@@ -6,38 +6,54 @@
     <title>Title</title>
 </head>
 
+<!-- TODO: make sort by title, answer, number of votes, submission time -->
+
 <body>
-    <h1>{{ question }}</h1>
+    <h3>{{ question_title }}</h3>
+    <blockquote>{{ question_message }}</blockquote>
+    <hr>
     {%  if answers %}
+        <h4>Answers to this question:</h4>
 
         <table>
+
         <thead>
         <tr>
             {% for key in answers[0].keys() %}
-            <td>{{ key.replace('_', ' ').capitalize() }}</td>
+                {% if key in ["submission_time", "vote_number", "message"] %}
+                    <th><a href="/questions/{{ key }}/<int:direction>">
+                        {{ key.replace('_', ' ').title() }}</a>
+                    </th>
+                {% elif key == "image" %}
+                    <td>{{ key.replace('_', ' ').title() }}</td>
+                {% endif %}
             {% endfor %}
         </tr>
         </thead>
-        {% for line in answers %}
+
+        <tbody>
+        {% for answer in answers %}
             <tr>
-                <td> {{line["id"]}}</td>
-                <td> {{line["submission_time"]}}</td>
-                <td> {{line["vote_number"]}}</td>
-                <td> {{line["question id"]}}</td>
-                <td> <a href="/answer">{{line["message"]}}</a></td>
-                <td> {{line["image"]}}</td>
+                <td> {{ answer["submission_time"] }}</td>
+                <td> {{ answer["vote_number"] }}</td>
+                <td><a href="/answer/{{ question_id }}/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
+                <td> {{ answer["image"] }}</td>
             </tr>
         {% endfor %}
+        </tbody>
+
         </table>
 
     {% else %}
-        <h3>There are no answers to selected question</h3>
+        <h5>There are no answers to selected question</h5>
+        <hr>
     {% endif %}
 
-<a href="/answer">Add answer</a>
-<p></p>
+<hr>
+<a href="/answer/{{ question_id }}">Add answer</a><p></p>
 <a href="/list">Back to questions list</a>
 <p></p>
 <a href="/">Back to main page</a>
+
 </body>
 </html>
