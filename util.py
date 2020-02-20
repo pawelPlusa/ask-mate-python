@@ -45,6 +45,7 @@ def find_next_id(contents_list: list) -> str:
     return str(number)
 
 
+
 def find_index_of_dict_by_id(dict_list, given_id):
     index_number = 0
     for dictionary in dict_list:
@@ -54,4 +55,7 @@ def find_index_of_dict_by_id(dict_list, given_id):
         index_number += 1
     return None
 
-
+# New function in test stage
+def generete_new_id(table):
+    print(max([int(line["id"]) for line in table]))
+    return max([int(line["id"]) for line in table]) + 1
