@@ -126,13 +126,11 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
 @app.route("/note", methods=['GET', 'POST'])
 @app.route("/note/<question_id>", methods=['GET', 'POST'])
-def add_question(question_message=None, question_id=None):
+def add_question(message=None, title=None, question_id=None):
 
     if request.method == 'GET' and question_id:
         title = data_manager.QUESTIONS[int(question_id)]["title"]
         message = data_manager.QUESTIONS[int(question_id)]["message"]
-
-        return render_template('note.html', message=message, title=title, question_id=question_id)
 
     elif request.method == 'POST':
         data_to_save = data_manager.QUESTIONS
@@ -157,7 +155,7 @@ def add_question(question_message=None, question_id=None):
 
         return redirect('/list')
 
-    return render_template('note.html', question_id=question_id, question_message=question_message)
+    return render_template('note.html', message=message, title=title, question_id=question_id)
 
 
 if __name__ == "__main__":
