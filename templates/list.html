@@ -16,8 +16,9 @@
     <tr>
         {% for key in sorted_questions[0].keys()%}
             {% if key == "submission_time" or key == "vote_number" or key == "message" or key == "view_number" or key == "title" %}
-             <td><a href="/list/{{key}}/1">
-                        {{ key.replace('_', ' ').capitalize() }}</a>
+             <td><a href="/list/{{ key }}/{{ '0' if direction else '1'}}">
+                        {{ key.replace('_', ' ').title() }}
+                        </a>
              </td>
             {% elif key == "message" or key == "image" %}
             <th> {{key}} </th>

@@ -55,8 +55,12 @@ def show_questions_list():
 def show_questions(sorted_by,direction):
     sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i[sorted_by], reverse=direction)
 
-    return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
+    if sorted_by in ["submission_time", "vote_number", "view_number"]:
+        sorted_questions.sort(key=lambda item: int(item[sorted_by]), reverse=direction)
+    elif sorted_by:
+        sorted_questions.sort(key=lambda item: item[sorted_by], reverse=direction)
 
+    return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions), direction=direction)
 
 # Tomek
 
@@ -143,13 +147,13 @@ def add_question(question_message=None, question_id=None):
                                  'submission_time': str(int(time.time())),
                                  'view_number': '0',
                                  'vote_number': '0',
-                                 'message': request.form['question_m'],
-                                 'title': request.form['title_m']
+                                 'message': request.form['question_m'].capitalize(),
+                                 'title': request.form['title_m'].capitalize()
                                  })
         else:
-            data_to_save[int(question_id)]['message'] = request.form['question_m']
+            data_to_save[int(question_id)]['message'] = request.form['question_m'].capitalize()
             data_to_save[int(question_id)]['submission_time'] = str(int(time.time()))
-            data_to_save[int(question_id)]['title'] = request.form['title_m']
+            data_to_save[int(question_id)]['title'] = request.form['title_m'].capitalize()
 
         connection.save_file(data_to_save, data_manager.QUESTION_FILE_PATH)
 
