@@ -64,7 +64,7 @@ h2 {
 }
 
 .table_all {
-    font-family: Ubuntu;
+    font-family: Atari-Classic;
 
     background: lightgrey;
     color: black;
@@ -102,6 +102,7 @@ a:visited {
     padding: 20px;
     border-radius: 5px;
 }
+
 .delete_button {
 
     padding-right: 10px;
