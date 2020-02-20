@@ -12,8 +12,8 @@
     <h3>{{ question_title }}</h3>
     <blockquote>{{ question_message }}</blockquote>
     <hr>
-    <h4>Answers to this question:</h4>
     {%  if answers %}
+        <h4>Answers to this question:</h4>
 
         <table>
 
@@ -36,7 +36,7 @@
             <tr>
                 <td> {{ answer["submission_time"] }}</td>
                 <td> {{ answer["vote_number"] }}</td>
-                <td><a href="/answer/{{ answer["question_id"] }}/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
+                <td><a href="/answer/{{ question_id }}/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
                 <td> {{ answer["image"] }}</td>
             </tr>
         {% endfor %}
@@ -46,11 +46,11 @@
 
     {% else %}
         <h5>There are no answers to selected question</h5>
+        <hr>
     {% endif %}
 
 <hr>
-<a href="/answer/{{ answers[0]["question_id"] }}">Add answer</a>
-<p></p>
+<a href="/answer/{{ question_id }}">Add answer</a><p></p>
 <a href="/list">Back to questions list</a>
 <p></p>
 <a href="/">Back to main page</a>
