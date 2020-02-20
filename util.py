@@ -1,9 +1,10 @@
-import time, datetime
-import data_manager
-import copy
 '''
 This module defines additional functions.
 '''
+
+import time
+import data_manager
+import copy
 
 
 def find_answers_by_question(question_id: str, answers_file: list) -> list:
@@ -16,6 +17,7 @@ def find_answers_by_question(question_id: str, answers_file: list) -> list:
     """
 
     return [single_answer for single_answer in answers_file if single_answer["question_id"] == question_id]
+
 
 def change_time_format(datafile):
     """
