@@ -77,6 +77,35 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
     return render_template('answer.html', answer_id=answer_id, answer_message=answer_message)
 
+@app.route("/questions", methods=['GET', 'POST'])
+@app.route("/questions/<question_id>", methods=['GET', 'POST'])
+def add_question(question_massage=None):
+    question_id = util.find_next_id(data_manager.QUESTIONS)
+
+    if request.method == 'POST':
+        data_to_save = data_manager.QUESTIONS
+
+        if question_id:
+            data_to_save[int(question_id)]['message'] = request.form['question_m']
+            data_to_save[int(question_id)]['submission_time'] = int(time.time())
+        else:
+            data_to_save.append({'id': util.find_next_id(data_to_save),
+                                 'submission_time': int(time.time()),
+                                 'vote_number': 0,
+                                 'question_id': question_id,
+                                 'message': request.form['question_m']
+                                 })
+
+        connection.save_file(data_to_save, data_manager.ANSWERS_FILE_PATH)
+
+        return redirect('/questions/' + question_id)
+
+    if answer_id:
+        question_massage = data_manager.QUESTIONS[int(question_id)]['message']
+
+    return render_template('note.html', question_id=question_id, question_massage=question_massage)
+
+
 
 if __name__ == "__main__":
     app.run(

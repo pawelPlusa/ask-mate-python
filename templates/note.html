@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset="utf-8">
+    <title>{{ 'Edit' if answer_id else 'Add' }} question</title>
 </head>
+
 <body>
-$END$
+    <h3>{{ 'Edit' if answer_id else 'Add' }} question</h3>
+
+    <form anction="/question" method="post">
+    <label for="question-add-edit">Your question:</label>
+    <textarea id="question-add-edit" name="question_m" rows="8" cols="40">{{ question_message if question_message }}</textarea>
+    <button type="submit">{{ 'Edit' if question_id else 'Add' }}</button>
+    </form>
+
 </body>
 </html>
