@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>ASK MATE</title>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="style.css") }}'>
 </head>
 <body>
 <h1>Welcome to ASK MATE</h1>
+<div class="index_links">
 <a href="/list"> Show all questions </a><br>
 <a href="/questions"> Add question </a>
-<h2>Last three questions were:</h2>
-
-<table>
+</div>
+    <h2>Last three questions were:</h2>
+    <p>{{ headers }}</p>
+<table class="table_all">
     <thead>
     <tr>
         {% for header in sorted_questions[0].keys()%}

@@ -1,0 +1,63 @@
+.table_body {
+
+    color: black;
+}
+
+table {
+    font-size: 0.8em;
+    margin: 1em;
+
+}
+
+h1 {
+    text-align: center;
+    margin: 0.5em;
+}
+
+.index_links {
+       text-align: center;
+       margin: 0.5em;
+
+                  }
+
+}
+th, td {
+    text-align: left;
+    padding: 0.5em;
+}
+h2 {
+ text-align: center;
+    margin: 0.5em
+
+}
+
+.table_all {
+    font-family: Ubuntu;
+
+    background: lightgrey;
+    color: black;
+    border-radius: .4em;
+    overflow: hidden;
+    border-top: 20px solid #ddd;
+}
+tr {
+    border-top: 4px solid #ddd;
+    border-bottom: 1px solid #ddd;
+
+  }
+
+a {
+    color: orangered;
+    font-weight: bolder;
+}
+a:link {
+    color: #11557C;
+    margin: 0.7em;
+
+}
+
+a:visited {
+    color: midnightblue;
+
+}
+

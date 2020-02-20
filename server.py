@@ -23,20 +23,20 @@ app = Flask(__name__)
 @app.route("/")
 def start():
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
-    return render_template("index.html", sorted_questions=sorted_questions)
+    return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions))
 
 # Łukasz
 
 @app.route("/list")
 def show_questions_list():
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
-    return render_template("list.html", sorted_questions = sorted_questions )
+    return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
 
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction):
     sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i[sorted_by], reverse= direction)
-    return render_template("list.html", sorted_questions=sorted_questions)
+    return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
 # Tomek
 
@@ -50,7 +50,7 @@ def show_answers(question_id):
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=answers)
+                           question_message=question_message, answers=util.change_time_format(answers))
 
 
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
