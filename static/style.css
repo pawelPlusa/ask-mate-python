@@ -1,6 +1,10 @@
 body {
     font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
-    background-color: #E6E6FA;
+    background-color: white;
+    padding: 20px;
+
+    margin-left: 80px;
+    margin-right: 80px;
 
 }
 
@@ -8,17 +12,31 @@ body {
 
     color: black;
 }
+
 .table_list {
 
     font-family: Ubuntu;
-    background: lightgrey;
+    background: #ddd;
     color: black;
     border-radius: .4em;
     overflow: hidden;
+    border: 20px solid #ddd;
     border-top: 20px solid #ddd;
+    border-left: 20px solid #ddd;
+}
+.table_all {
 
+    background: #ddd;
+
+    border-radius: .8em;
+    overflow: hidden;
+    border: 20px solid #ddd;
+
+    min-height: 1200px;
 
 }
+
+
 .button_vote {
     font-size: 10px;
     height: 2em;
@@ -59,26 +77,26 @@ th, td {
 }
 h2 {
  text-align: center;
-    margin: 0.5em
+    margin: 0.1em
+
+}
+.table_all thead {
+
+  border-bottom: 3px solid black;
 
 }
 
-.table_all {
-    font-family: Atari-Classic;
-
-    background: lightgrey;
-    color: black;
-    border-radius: .8em;
-    overflow: hidden;
-    border-top: 20px solid #ddd;
-    min-height: 1200px;
-}
 tr {
     border-top: 4px solid #ddd;
     border-bottom: 1px solid #ddd;
 
   }
 
+.a_at_list {
+    text-align: center;
+    color: #9C1A1C;
+
+}
 
 a:link {
     color: #11557C;
@@ -107,4 +125,21 @@ a:visited {
 
     padding-right: 10px;
     padding-left:  10px;
+}
+.left_bottom_on_list {
+    padding-left: 20px;
+
+}
+.menu_list {
+      margin-left: auto;
+  margin-right: auto;
+    align-content: center;
+    text-align: right;
+
+}
+.menu_list td {
+    padding: 0;
+    font-size: 1.5em;
+    text-align: center;
+
 }

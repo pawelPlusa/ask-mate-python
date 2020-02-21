@@ -7,11 +7,16 @@
 </head>
 <body>
 <h1>Welcome to ASK MATE</h1>
-<div class="index_links">
-<a href="/list"> Show all questions </a><br>
-<a href="/note"> Add question </a>
-</div>
-    <h2>Last three questions were:</h2>
+<table class="menu_list">
+    <tr>
+        <td><a href="/list"> Show all questions </a></td>
+    </tr>
+    <tr>
+        <td><a href="/note"> Add question </a></td>
+    </tr>
+</table>
+
+    <h2>Last five questions were:</h2>
 
     <table class="table_all">
         <thead>
@@ -22,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for dict in sorted_questions %}
+            {% for dict in sorted_questions[:5] %}
                 <tr>  </tr>
                      {% for key,value in dict.items() %}
                         {% if key in headers %}
