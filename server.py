@@ -56,6 +56,8 @@ def show_questions_list(question_id=None, vote=None):
     sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
     question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
 
+    # TODO: following block move to new function:
+
     if vote:
         votes_no = int(data_manager.QUESTIONS[question_index]["vote_number"])
         if vote == "vote_down" and votes_no > 0:
@@ -94,9 +96,10 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
     question_message = data_manager.QUESTIONS[question_index]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
+    # TODO: following block move to new function:
+
     if vote:
         votes_no = int(data_manager.ANSWERS[answer_index]["vote_number"])
-        print(votes_no)
         if vote == "vote_down" and votes_no > 0:
             votes_no -= 1
         elif vote == "vote_up":
