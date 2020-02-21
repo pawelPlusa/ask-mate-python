@@ -26,7 +26,7 @@
                 <tr>  </tr>
                      {% for key,value in dict.items() %}
                         {% if key in headers %}
-                            <td>{% if key.strip() == "title": %}
+                            <td>{% if key.strip() == "title" %}
                                     <a href="/questions/{{dict['id']}}">{{value}}</a>
                                     {% else %}
                                 {{value}}

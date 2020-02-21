@@ -44,8 +44,21 @@ def delete(question_id=None, confirmation=None, status=None):
 # Łukasz
 
 @app.route("/list")
-def show_questions_list():
+@app.route("/list/<question_id>/<vote>")
+def show_questions_list(question_id=None, vote=None):
     sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
+    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+
+    if vote:
+        votes_no = int(data_manager.QUESTIONS[question_index]["vote_number"])
+        if vote == "vote_down" and votes_no > 0:
+            votes_no -= 1
+        elif vote == "vote_up":
+            votes_no += 1
+        data_manager.QUESTIONS[question_index]["vote_number"] = str(votes_no)
+        connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
+
+        return redirect("/list", code=303)
 
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
@@ -65,24 +78,26 @@ def show_questions(sorted_by,direction):
 
 @app.route("/questions/<question_id>")
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
-@app.route("/questions/<question_id>/<vote>")
-def show_answers(question_id, sorted_by=None, direction=0, vote=None):
+@app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
+def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+    answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
+    print(answer_index)
     question_title = data_manager.QUESTIONS[int(question_id)]['title']
     question_message = data_manager.QUESTIONS[int(question_id)]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
     if vote:
-        votes_no = int(data_manager.QUESTIONS[question_index]["vote_number"])
+        votes_no = int(data_manager.ANSWERS[answer_index]["vote_number"])
+        print(votes_no)
         if vote == "vote_down" and votes_no > 0:
             votes_no -= 1
         elif vote == "vote_up":
             votes_no += 1
-        data_manager.QUESTIONS[int(question_index)]["vote_number"] = str(votes_no)
-        connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
+        data_manager.ANSWERS[answer_index]["vote_number"] = str(votes_no)
+        connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
 
-        return redirect("/list", code=303)
+        return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
         answers.sort(key=lambda item: int(item[sorted_by]), reverse=direction)

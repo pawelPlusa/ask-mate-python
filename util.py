@@ -59,7 +59,7 @@ def find_index_of_dict_by_id(dict_list, given_id):
 def purge_answer_list(answers, question_id):
     """
     Takes a list of dictionaries and returns other
-     list without those related to given question_id
+    list without those related to given question_id
     """
 
     purged_answers = []

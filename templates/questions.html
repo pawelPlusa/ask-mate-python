@@ -36,8 +36,18 @@
         {% for answer in answers %}
             <tr>
                 <td> {{ answer["submission_time"] }}</td>
-                <td> {{ answer["vote_number"] }}</td>
-                <td><a href="/answer/{{ question_id }}/{{ answer["id"] }}">{{ answer["message"] }}</a></td>
+                <td> {{ answer["vote_number"] }}
+                    <a class="vote_button" href="/questions/vote/{{ question_id }}/{{ answer["id"] }}/vote_up">
+                    <img src='/static/images/ar_up.png' alt="up_arrow" width="15px">
+                    </a>
+                    <a class="vote_button" href="/questions/vote/{{ question_id }}/{{ answer["id"] }}/vote_down">
+                    <img src='/static/images/ar_down.png' alt="down_arrow" width="15px">
+                    </a>
+                </td>
+                <td><a href="/answer/{{ question_id }}/{{ answer["id"] }}">
+                    {{ answer["message"] }}
+                    </a>
+                </td>
                 <td> {{ answer["image"] }}</td>
             </tr>
         {% endfor %}
