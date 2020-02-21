@@ -66,9 +66,3 @@ def purge_answer_list(answers, question_id):
         if answer["question_id"] != str(question_id):
             purged_answers.append(answer)
     return purged_answers
-
-
-# New function in test stage
-def generete_new_id(table):
-    print(max([int(line["id"]) for line in table]))
-    return max([int(line["id"]) for line in table]) + 1
