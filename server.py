@@ -123,7 +123,9 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
-    question_title = data_manager.QUESTIONS[int(question_id)]['title']
+
+    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+    question_title = data_manager.QUESTIONS[question_index]['title']
 
     if request.method == 'POST':
         data_to_save = data_manager.ANSWERS

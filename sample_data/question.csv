@@ -1,14 +1,12 @@
 id,submission_time,view_number,vote_number,title,message,image
-0,1582247813,0,2,Co to jest?,Co to jest?,
-1,1582245142,15,8,Ile lat ma moja mama?,Oto jest pytanie,images/image1.png
-2,1493015432,1364,71,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
-
-This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+0,1582247813,0,10,Co to jest?,Co to jest?,
+1,1582281098,15,10,Ile lat ma moja mama?,Nie wiem gdzie to sprawdzić!,images/image1.png
 4,1582233209,0,5,How do I know when I should stop coding?,"Sometimes it is very hard to recognize, when you should turn off computer for your own sake.
 What are the symptoms?
 ",
 5,1582237965,0,0,What will happen with messages after del of this??,I just wonder if it works...,
-6,1582245218,0,1,Just checking if everything works as it should,Test test test,
+6,1582245218,0,0,Just checking if everything works as it should,Test test test,
 7,1582239178,0,5,Sddsa,Dsadsad,
 8,1582242762,0,2,How to make money with python,"Folks! i want to earn very more money.
 help",
+2,1582281003,0,0,How to make beautiful presentation,"I want to know, bastatrds!",
