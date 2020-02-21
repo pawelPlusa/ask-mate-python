@@ -49,6 +49,9 @@
                     </a>
                 </td>
                 <td> {{ answer["image"] }}</td>
+                <td><a href="/delete/answer/{{ question_id }}/{{ answer["id"] }}">
+                    <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Delete</title>
 </head>
 <body>
-    {% if question_id %}
-        <h2>Are you sure you want delete question:</h2>
-        <h4></h4>
-        <a href="/delete/{{question_id}}/1">YES</a>
-        <a href="/list">NO</a>
+    {% if status and answer_id %}
+        <h3> Answer was removed</h3>
+        <a href="/questions/{{ question_id }}">Back to the answers list</a>
     {% elif status %}
         <h3> Question was removed</h3>
         <a href="/list">Back to the question list</a>
+    {% elif question_id and answer_id %}
+        <h2>Are you sure you want delete answer?</h2>
+        <h4></h4>
+        <a href="/delete/answer/{{ question_id }}/{{ answer_id }}/1">YES</a>
+        <a href="/questions/{{ question_id }}">NO</a>
+    {% elif question_id %}
+        <h2>Are you sure you want delete question?</h2>
+        <h4></h4>
+        <a href="/delete/{{question_id}}/1">YES</a>
+        <a href="/list">NO</a>
     {% endif %}
 </body>
 </html>

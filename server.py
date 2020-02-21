@@ -27,18 +27,25 @@ def start():
     return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:])
 
-
-@app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/<question_id>")
-def delete(question_id=None, confirmation=None, status=None):
+@app.route("/delete/<question_id>/<int:confirmation>")
+@app.route("/delete/answer/<question_id>/<answer_id>")
+@app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
+def delete(question_id, confirmation=None, answer_id=None, status=None):
 
     if confirmation:
-        del data_manager.QUESTIONS[util.find_index_of_dict_by_id(data_manager.QUESTIONS,question_id)]
-        connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
+        if answer_id:
+            del data_manager.ANSWERS[util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)]
+            connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
+        else:
+            del data_manager.QUESTIONS[util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)]
+            purged_answers = util.purge_answer_list(data_manager.ANSWERS, question_id)
+            connection.save_file(purged_answers, data_manager.ANSWERS_FILE_PATH)
+            connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
 
-        return render_template("delete.html", status=1)
-    else:
-        return render_template("delete.html", question_id=question_id)
+        status = True
+
+    return render_template("delete.html", question_id=question_id, answer_id=answer_id, status=status)
 
 
 # Łukasz
@@ -82,9 +89,9 @@ def show_questions(sorted_by,direction):
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
     answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
-    print(answer_index)
-    question_title = data_manager.QUESTIONS[int(question_id)]['title']
-    question_message = data_manager.QUESTIONS[int(question_id)]['message']
+    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+    question_title = data_manager.QUESTIONS[question_index]['title']
+    question_message = data_manager.QUESTIONS[question_index]['message']
     answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
 
     if vote:
@@ -148,8 +155,9 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 def add_question(message=None, title=None, question_id=None):
 
     if request.method == 'GET' and question_id:
-        title = data_manager.QUESTIONS[int(question_id)]["title"]
-        message = data_manager.QUESTIONS[int(question_id)]["message"]
+        question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+        title = data_manager.QUESTIONS[question_index]["title"]
+        message = data_manager.QUESTIONS[question_index]["message"]
 
     elif request.method == 'POST':
         data_to_save = data_manager.QUESTIONS
