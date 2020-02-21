@@ -29,7 +29,7 @@ def start():
 
 @app.route("/list")
 def show_questions_list():
-    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: int(i['submission_time']), reverse=1)
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
 
 
