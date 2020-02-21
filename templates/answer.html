@@ -9,7 +9,7 @@
 <body>
     <h3>{{ 'Edit' if answer_id else 'Add' }} answer</h3>
 
-    <form anction="/answer" method="post">
+    <form method="post">
     <label for="answer-add-edit">Your answer:</label>
     <textarea id="answer-add-edit" name="answer_m" rows="8" cols="40">{{ answer_message if answer_message }}</textarea>
     <button type="submit">{{ 'Edit' if answer_id else 'Add' }}</button>

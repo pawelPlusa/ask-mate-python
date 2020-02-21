@@ -9,7 +9,7 @@
 <!-- TODO: make sort by title, answer, number of votes, submission time -->
 
 <body>
-    <h3>{{ question_title }}</h3>
+    <h3><a href="/add/{{ question_id }}">{{ question_title }}<a/></h3>
     <blockquote>{{ question_message }}</blockquote>
     <hr>
     {%  if answers %}
@@ -21,8 +21,10 @@
         <tr>
             {% for key in answers[0].keys() %}
                 {% if key in ["submission_time", "vote_number", "message"] %}
-                    <th><a href="/questions/{{ key }}/<int:direction>">
-                        {{ key.replace('_', ' ').title() }}</a>
+                    <th>
+                        <a href="/questions/{{ question_id }}/{{ key }}/{{ '0' if direction else '1'}}">
+                        {{ key.replace('_', ' ').title() }}
+                        </a>
                     </th>
                 {% elif key == "image" %}
                     <td>{{ key.replace('_', ' ').title() }}</td>

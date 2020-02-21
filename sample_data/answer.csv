@@ -6,11 +6,20 @@ id,submission_time,vote_number,question_id,message,image
 3,1582151029,0,0,"Eat a lot, like an elephant",
 4,1582152868,0,0,Be sad?,
 5,1582153282,0,0,No,
-6,1582152544,0,0,"Go home and sleep
+6,1582187188,0,0,"Go home and sleep and eat
+
 ",
 7,1582152712,0,0,Throw your computer out of window,
 8,1582152637,0,0,"Go home and sleep
 ",
+<<<<<<< HEAD
 9,1582152723,0,0,Kiss me!,
 10,1582152887,0,0,"Less thinking, more working!",
 11,1582194005,0,0,Elegancko,
+=======
+9,1582187177,0,0,Kiss me!,
+10,1582152887,0,0,"Less thinking, more working!",
+11,1582186971,0,1,Sleep,
+12,1582186964,0,1,Don't use wordpress,
+13,1582187624,0,0,no no!,
+>>>>>>> origin
