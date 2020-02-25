@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def start():
-    sorted_questions = sorted(data_manager.QUESTIONS, key= lambda i: i['submission_time'], reverse=1)
+    sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
 
     return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:])
@@ -131,8 +131,9 @@ def add_answer(question_id, answer_id=None, answer_message=None):
         data_to_save = data_manager.ANSWERS
 
         if answer_id:
-            data_to_save[int(answer_id)]['message'] = request.form['answer_m']
-            data_to_save[int(answer_id)]['submission_time'] = str(int(time.time()))
+            answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
+            data_to_save[answer_index]['message'] = request.form['answer_m']
+            data_to_save[answer_index]['submission_time'] = str(int(time.time()))
         else:
             data_to_save.append({'id': util.find_next_id(data_to_save),
                                  'submission_time': str(int(time.time())),
@@ -146,7 +147,8 @@ def add_answer(question_id, answer_id=None, answer_message=None):
         return redirect('/questions/' + question_id)
 
     if answer_id:
-        answer_message = data_manager.ANSWERS[int(answer_id)]['message']
+        answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
+        answer_message = data_manager.ANSWERS[answer_index]['message']
 
     return render_template('answer.html',
                            answer_id=answer_id, answer_message=answer_message,
