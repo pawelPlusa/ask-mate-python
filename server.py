@@ -177,9 +177,10 @@ def add_question(message=None, title=None, question_id=None):
                                  'title': request.form['title_m'].capitalize()
                                  })
         else:
-            data_to_save[int(question_id)]['message'] = request.form['question_m'].capitalize()
-            data_to_save[int(question_id)]['submission_time'] = str(int(time.time()))
-            data_to_save[int(question_id)]['title'] = request.form['title_m'].capitalize()
+            question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+            data_to_save[question_index]['message'] = request.form['question_m'].capitalize()
+            data_to_save[question_index]['submission_time'] = str(int(time.time()))
+            data_to_save[question_index]['title'] = request.form['title_m'].capitalize()
 
         connection.save_file(data_to_save, data_manager.QUESTION_FILE_PATH)
 
