@@ -47,13 +47,10 @@ def find_next_id(contents_list: list) -> str:
 
 
 def find_index_of_dict_by_id(dict_list, given_id):
-    index_number = 0
-    for dictionary in dict_list:
-        if dictionary["id"] == given_id:
-            return index_number
 
-        index_number += 1
-    return None
+    for index, dictionary in enumerate(dict_list):
+        if dictionary["id"] == given_id:
+            return index
 
 
 def purge_answer_list(answers, question_id):
