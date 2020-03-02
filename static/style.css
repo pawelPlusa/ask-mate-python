@@ -14,7 +14,7 @@ body {
 }
 
 .table_list {
-
+    text-align: right;
     font-family: Ubuntu;
     background: #ddd;
     color: black;
@@ -27,7 +27,7 @@ body {
 .table_all {
 
     background: #ddd;
-
+    text-align: justify;
     border-radius: .8em;
     overflow: hidden;
     border: 20px solid #ddd;
@@ -142,4 +142,8 @@ a:visited {
     font-size: 1.5em;
     text-align: center;
 
+}
+.line_message {
+
+    text-align: justify;
 }
