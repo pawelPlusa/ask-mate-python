@@ -38,6 +38,7 @@ def find_next_id(contents_list: list) -> str:
     """
 
     number = 0
+    contents_list.sort(key=lambda item: int(item['id']))
     while number < len(contents_list):
         if contents_list[number]['id'] != str(number):
             return str(number)

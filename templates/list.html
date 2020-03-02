@@ -8,15 +8,14 @@
 <body>
 <h2>Question list: </h2>
 
-<!-- TODO: make sort by title, message, number of views, number of votres, submission time -->
-<!-- TODO: remove id from list> -->
 <table class="menu_list"><tr>
     <td><a class="a_at_list" href="/note"> Add question </a></td>
 <p></p>
 </tr><tr>
 <td><a class="a_at_list" href="/"> Back to main page </a></td>
 </tr></table>
-    <table class="table_list">
+
+<table class="table_list">
     <thead>
 
     <tr>
@@ -50,8 +49,6 @@
             <td><a href="/delete/{{line["id"]}}">
                 <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a>
             </td>
-
-
         </tr>
     {% endfor %}
 </table>
