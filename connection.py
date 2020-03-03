@@ -70,7 +70,7 @@ def connection_handler(function):
 
 """this part refers to old csv functionality"""
 
-# TODO: Remove what bellove after full conversion to SQL:
+# TODO: check what is obsolete delte after migration to sql
 import csv
 
 
