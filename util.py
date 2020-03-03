@@ -5,6 +5,20 @@ This module defines additional functions.
 import time
 import copy
 
+"""
+from this place we add functions from sprint#2 (sql)
+"""
+
+def get_single_row(data, searched_id):
+    """ takes single row from database """
+    return [row for row in data if row["id"] == int(searched_id)][0]
+
+
+"""
+FUNCTIONS FROM SPRINT#1
+"""
+
+#TODO: DELETE UTLILS FUNCTION->CSV AFTER UPDATE ALL TO SQL
 
 def find_answers_by_question(question_id: str, answers_file: list) -> list:
     """
@@ -56,10 +70,6 @@ def find_index_of_dict_by_id(dict_list, given_id):
     return None
 
 
-def get_single_row(data, searched_id):
-    """ takes single row from database """
-    return [row for row in data if row["id"] == int(searched_id)][0]
-
 
 def purge_answer_list(answers, question_id):
     """
@@ -72,3 +82,9 @@ def purge_answer_list(answers, question_id):
         if answer["question_id"] != str(question_id):
             purged_answers.append(answer)
     return purged_answers
+
+"""
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SQL FUNCTIONS SHOULD BE ADDED ON TOP!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"""
