@@ -49,27 +49,38 @@ def delete(question_id, confirmation=None, answer_id=None, status=None):
 
 
 # Łukasz
-
+@app.route("/list2")
 @app.route("/list")
 @app.route("/list/<question_id>/<vote>")
-def show_questions_list(question_id=None, vote=None):
-    sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+def show_questions_list(question_id=None, vote=None, table="question"):
 
+    question_list = data_manager.get_all_from_given_table(table)
+    sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
+
+    # sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
+
+    # print(f"question_index {question_index}")
     # TODO: following block move to new function:
 
     if vote:
-        votes_no = int(data_manager.QUESTIONS[question_index]["vote_number"])
+
+        row_to_edit = util.get_single_row(question_list, question_id)
+
+        votes_no = int(row_to_edit["vote_number"])
         if vote == "vote_down" and votes_no > 0:
             votes_no -= 1
         elif vote == "vote_up":
             votes_no += 1
-        data_manager.QUESTIONS[question_index]["vote_number"] = str(votes_no)
-        connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
+
+        data_to_update = {"vote_number" : str(votes_no)}
+
+        sql_condition = {"id" : question_id}
+        data_manager.update_data_in_table(table, data_to_update, sql_condition)
+
 
         return redirect("/list", code=303)
 
-    return render_template("list.html", sorted_questions=util.change_time_format(sorted_questions))
+    return render_template("list.html", sorted_questions=(sorted_question_list))
 
 
 @app.route("/list/<sorted_by>/<int:direction>")
