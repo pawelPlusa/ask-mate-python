@@ -105,6 +105,8 @@ def show_questions(sorted_by,direction, table="question"):
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
+#TODO: Change it to sql - Pawel
+
     answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
     question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
     question_title = data_manager.QUESTIONS[question_index]['title']
@@ -176,18 +178,12 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 @app.route("/note/<question_id>", methods=['GET', 'POST'])
 def add_question(message=None, title=None, question_id=None, table="question"):
 
-#TODO: change fetch data to form from CSV to SQL, clean all commented lines after completion - Pawel
-
     if request.method == 'GET' and question_id:
-        question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
-        title = data_manager.QUESTIONS[question_index]["title"]
-        message = data_manager.QUESTIONS[question_index]["message"]
-
+        single_row = util.get_single_row(data_manager.get_all_from_given_table(table), int(question_id))
+        title = single_row["title"]
+        message = single_row["message"]
     elif request.method == 'POST':
-        # data_to_save = data_manager.QUESTIONS
-
         if not question_id:
-            # question_id = (util.find_next_id(data_to_save))
             data_to_save = {
                                  'submission_time': datetime.now(),
                                  'view_number': 0,
@@ -197,22 +193,14 @@ def add_question(message=None, title=None, question_id=None, table="question"):
                                  'image': None
                                  }
             print(data_to_save)
-            #TODO: add insert f in data_manager and implement it here - Pawel
-            return None
-
+            data_manager.insert_data_to_table(table, data_to_save)
         else:
-            # question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
             data_to_save = { 'message': request.form['question_m'].capitalize(),
                              'submission_time': datetime.now(),
                              'title': request.form['title_m'].capitalize()
             }
             sql_conditions = {'id': question_id}
-            # data_to_save[question_index]['message'] = request.form['question_m'].capitalize()
-            # data_to_save[question_index]['submission_time'] = str(int(time.time()))
-            # data_to_save[question_index]['title'] = request.form['title_m'].capitalize()
-        data_manager.update_data_in_table(table,data_to_save, sql_conditions)
-
-        # connection.save_file(data_to_save, data_manager.QUESTION_FILE_PATH)
+            data_manager.update_data_in_table(table,data_to_save, sql_conditions)
 
         return redirect('/list')
 

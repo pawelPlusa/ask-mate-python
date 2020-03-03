@@ -23,26 +23,33 @@ def get_mentor_names_by_first_name(cursor, first_name):
 
 @connection.connection_handler
 def get_all_from_given_table(cursor, table_name):
+    """
+    :rtype: list of dicts
+    """
     query = f""" SELECT * FROM {table_name};"""
     cursor.execute(query)
     result = cursor.fetchall()
     return result
 
 @connection.connection_handler
-def update_data_in_table(cursor, table_name, data_to_update, condition):
-
+def update_data_in_table(cursor, table_name: str, data_to_update: dict, condition: dict):
+    """
+    Takes table_name, data_to_update as a list of dicts, and condition to
+    create sql update query. Cursor is added by decorator f.
+    :param cursor:
+    :param table_name:
+    :param data_to_update:
+    :param condition:
+    :return: No return
+    """
     update_query = f"""UPDATE {table_name} SET """
-
-    if len(data_to_update.keys())>1:
-        for key,value in data_to_update.items():
-            print(key,value)
-            update_query += f"{key} = %({key})s, "
-        update_query = update_query.rstrip(", ")
-    else:
-        update_query += f"{list(data_to_update.keys())[0]} = %({list(data_to_update.keys())[0]})s "
+    for key in data_to_update.keys():
+        update_query += f"{key} = %({key})s, "
+    update_query = update_query.rstrip(", ")
 
     update_query += f" WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"
     data_to_update.update(condition)
+
     # print(update_query)
     # print(f"cmfff {cursor.mogrify(update_query, data_to_update)}")
     cursor.execute(update_query, data_to_update)
@@ -60,3 +67,21 @@ def delete_data_in_table(cursor, table_name, condition):
     print(f"cmfff {cursor.mogrify(update_query, condition)}")
     # cursor.execute(update_query, condition)
     # print(cursor.query)
+    return None
+
+
+@connection.connection_handler
+def insert_data_to_table(cursor, table_name, data_to_insert):
+
+    insert_query = f"INSERT INTO {table_name} ("
+    for key in data_to_insert.keys():
+        insert_query += f"{key}, "
+    insert_query = ")".join(insert_query.rsplit(", ", 1))
+
+    insert_query += f" VALUES ("
+    for key in data_to_insert.keys():
+        insert_query += f"%({key})s, "
+    insert_query = ")".join(insert_query.rsplit(", ", 1))
+    # print(insert_query)
+    # print(cursor.mogrify(insert_query,data_to_insert))
+    cursor.execute(insert_query,data_to_insert)
