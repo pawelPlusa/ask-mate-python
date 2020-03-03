@@ -1,4 +1,5 @@
 import connection
+import copy
 
 QUESTION_FILE_PATH = "sample_data/question.csv"
 ANSWERS_FILE_PATH = "sample_data/answer.csv"
@@ -34,11 +35,12 @@ def update_data_in_table(cursor, table_name, data_to_update, condition):
 
     if len(data_to_update.keys())>1:
         for key,value in data_to_update.items():
-            update_query += f"{key[0]} = {value[0]}, "
+            update_query += f"{key[0]} = %({key[0]})s, "
         update_query.rstrip(",")
     else:
-        update_query += f"{list(data_to_update.keys())[0]} = {list(data_to_update.values())[0]} "
+        update_query += f"{list(data_to_update.keys())[0]} = %({list(data_to_update.keys())[0]})s "
 
-    update_query += f"WHERE {list(condition.keys())[0]} = {list(condition.values())[0]};"
-    # print(update_query)
-    cursor.execute(update_query)
+    update_query += f"WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"
+
+    data_to_update.update(condition)
+    cursor.execute(update_query, data_to_update)
