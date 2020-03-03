@@ -24,9 +24,10 @@ def change_time_format(datafile):
     Should be used only when passing data to html
     """
     datafile_with_dates = copy.deepcopy(datafile)
-    for single_dict in datafile_with_dates:
-        single_dict["submission_time"] = time.strftime("%d %m %Y, %H:%M",
-                                                       time.localtime(int(single_dict["submission_time"])))
+    # for single_dict in datafile_with_dates:
+        # print(single_dict)
+        # single_dict["submission_time"] = time.strftime("%d %m %Y, %H:%M",
+        #                                                time.localtime(int(single_dict["submission_time"])))
     return datafile_with_dates
 
 
@@ -54,6 +55,11 @@ def find_index_of_dict_by_id(dict_list, given_id):
 
         index_number += 1
     return None
+
+
+def get_single_row(data, searched_id):
+    """ takes single row from database """
+    return [row for row in data if row["id"] == int(searched_id)][0]
 
 
 def purge_answer_list(answers, question_id):
