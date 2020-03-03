@@ -35,12 +35,28 @@ def update_data_in_table(cursor, table_name, data_to_update, condition):
 
     if len(data_to_update.keys())>1:
         for key,value in data_to_update.items():
-            update_query += f"{key[0]} = %({key[0]})s, "
-        update_query.rstrip(",")
+            print(key,value)
+            update_query += f"{key} = %({key})s, "
+        update_query = update_query.rstrip(", ")
     else:
         update_query += f"{list(data_to_update.keys())[0]} = %({list(data_to_update.keys())[0]})s "
 
+    update_query += f" WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"
+    data_to_update.update(condition)
+    # print(update_query)
+    # print(f"cmfff {cursor.mogrify(update_query, data_to_update)}")
+    cursor.execute(update_query, data_to_update)
+    # print(cursor.query)
+
+
+#TODO: Finish delete - Pawel
+@connection.connection_handler
+def delete_data_in_table(cursor, table_name, condition):
+
+    update_query = f"""DELETE FROM {table_name} """
     update_query += f"WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"
 
-    data_to_update.update(condition)
-    cursor.execute(update_query, data_to_update)
+    # print(update_query)
+    print(f"cmfff {cursor.mogrify(update_query, condition)}")
+    # cursor.execute(update_query, condition)
+    # print(cursor.query)
