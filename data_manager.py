@@ -1,5 +1,4 @@
 import connection
-import database_common
 
 QUESTION_FILE_PATH = "sample_data/question.csv"
 ANSWERS_FILE_PATH = "sample_data/answer.csv"
@@ -10,7 +9,7 @@ ANSWERS = connection.open_file(ANSWERS_FILE_PATH)
 
 
 #just a template for further functions
-@database_common.connection_handler
+@connection.connection_handler
 def get_mentor_names_by_first_name(cursor, first_name):
     cursor.execute("""
                     SELECT first_name, last_name FROM mentors
@@ -21,14 +20,14 @@ def get_mentor_names_by_first_name(cursor, first_name):
     return names
 
 
-@database_common.connection_handler
+@connection.connection_handler
 def get_all_from_given_table(cursor, table_name):
     query = f""" SELECT * FROM {table_name};"""
     cursor.execute(query)
     result = cursor.fetchall()
     return result
 
-@database_common.connection_handler
+@connection.connection_handler
 def update_data_in_table(cursor, table_name, data_to_update, condition):
 
     update_query = f"""UPDATE {table_name} SET """
