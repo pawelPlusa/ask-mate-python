@@ -11,12 +11,14 @@ from this place we add functions from sprint#2 (sql)
 
 def get_single_row(data, searched_id):
     """ takes single row from database """
+
     return [row for row in data if row["id"] == int(searched_id)][0]
 
 
 """
 FUNCTIONS FROM SPRINT#1
 """
+
 
 #TODO: DELETE UTLILS FUNCTION->CSV AFTER UPDATE ALL TO SQL
 

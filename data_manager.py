@@ -1,5 +1,4 @@
 import connection
-import copy
 
 QUESTION_FILE_PATH = "sample_data/question.csv"
 ANSWERS_FILE_PATH = "sample_data/answer.csv"
