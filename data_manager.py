@@ -27,6 +27,7 @@ def get_all_from_given_table(cursor, table_name):
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
 def update_data_in_table(cursor, table_name, data_to_update, condition):
 
@@ -40,5 +41,5 @@ def update_data_in_table(cursor, table_name, data_to_update, condition):
         update_query += f"{list(data_to_update.keys())[0]} = {list(data_to_update.values())[0]} "
 
     update_query += f"WHERE {list(condition.keys())[0]} = {list(condition.values())[0]};"
-    # print(update_query)
+
     cursor.execute(update_query)
