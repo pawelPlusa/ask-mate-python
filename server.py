@@ -75,7 +75,7 @@ def show_questions(sorted_by,direction, table="question"):
     sorted_questions = sorted(question_list, key=lambda i: i[sorted_by], reverse=direction)
 
     if sorted_by in ["submission_time", "vote_number", "view_number"]:
-        sorted_questions.sort(key=lambda item: int(item[sorted_by]), reverse=direction)
+        sorted_questions.sort(key=lambda item: (item[sorted_by]), reverse=direction)
     elif sorted_by:
         sorted_questions.sort(key=lambda item: item[sorted_by], reverse=direction)
 
@@ -104,7 +104,7 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
         return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
-        answers.sort(key=lambda item: int(item[sorted_by]), reverse=direction)
+        answers.sort(key=lambda item: (item[sorted_by]), reverse=direction)
     elif sorted_by:
         answers.sort(key=lambda item: item[sorted_by], reverse=direction)
 
