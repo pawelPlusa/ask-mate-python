@@ -57,11 +57,17 @@ def change_time_format(datafile):
     Should be used only when passing data to html
     """
     datafile_with_dates = copy.deepcopy(datafile)
+    # print(f"datafile_with_dates {datafile_with_dates}")
 
+    if type(datafile_with_dates) != list:
+        list(datafile_with_dates)
     for single_dict in datafile_with_dates:
         single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")
 
     return datafile_with_dates
+    # else:
+    #     datafile_with_dates["submission_time"] = datafile_with_dates["submission_time"].strftime("%d %m %Y, %H:%M")
+    #     return datafile_with_dates
 
 
 def find_next_id(contents_list: list) -> str:

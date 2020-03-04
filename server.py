@@ -37,15 +37,11 @@ def delete(question_id, confirmation=None, answer_id=None, status=None):
 
     if confirmation:
         if answer_id:
-            # sql_conditional = { "answer_id" : answer_id}
-            # data_manager.delete_data_in_table("answer", sql_conditional)
-            del data_manager.ANSWERS[util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)]
-            connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
+            answer_sql_conditional = { "id" : answer_id}
+            data_manager.delete_data_in_table("answer", answer_sql_conditional)
         else:
-            del data_manager.QUESTIONS[util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)]
-            purged_answers = util.purge_answer_list(data_manager.ANSWERS, question_id)
-            connection.save_file(purged_answers, data_manager.ANSWERS_FILE_PATH)
-            connection.save_file(data_manager.QUESTIONS, data_manager.QUESTION_FILE_PATH)
+            data_manager.delete_data_in_table("answer", {"question_id" : question_id})
+            data_manager.delete_data_in_table("question", {"id" : question_id} )
 
         status = True
 
@@ -77,7 +73,7 @@ def show_questions(sorted_by,direction, table="question"):
     sorted_questions = sorted(question_list, key=lambda i: i[sorted_by], reverse=direction)
 
     if sorted_by in ["submission_time", "vote_number", "view_number"]:
-        sorted_questions.sort(key=lambda item: int(item[sorted_by]), reverse=direction)
+        sorted_questions.sort(key=lambda item: (item[sorted_by]), reverse=direction)
     elif sorted_by:
         sorted_questions.sort(key=lambda item: item[sorted_by], reverse=direction)
 
@@ -88,69 +84,64 @@ def show_questions(sorted_by,direction, table="question"):
 @app.route("/questions/<question_id>")
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
-def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
+def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0,):
 
 #TODO: Change it to sql
 
-    answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
-    question_title = data_manager.QUESTIONS[question_index]['title']
-    question_message = data_manager.QUESTIONS[question_index]['message']
-    answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
+    given_question=util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id))
+    answers = sorted(data_manager.get_from_table_condition("answer", {"question_id":question_id}), key = lambda i:i["submission_time"], reverse=True)
+    # print(f"answers {answers}")
+    question_title = given_question["title"]
+    question_message = given_question["message"]
 
-    # TODO: following block move to new function:
+    # TODO: fix submission_time sort:
 
     if vote:
-        votes_no = int(data_manager.ANSWERS[answer_index]["vote_number"])
-        if vote == "vote_down" and votes_no > 0:
-            votes_no -= 1
-        elif vote == "vote_up":
-            votes_no += 1
-        data_manager.ANSWERS[answer_index]["vote_number"] = str(votes_no)
-        connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
-
+        util.check_if_vote("answer", answers, answer_id, vote)
         return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
-        answers.sort(key=lambda item: int(item[sorted_by]), reverse=direction)
+        answers.sort(key=lambda item: (item[sorted_by]), reverse=direction)
     elif sorted_by:
         answers.sort(key=lambda item: item[sorted_by], reverse=direction)
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=util.change_time_format(answers),
+                           question_message=question_message, answers=answers ,
                            direction=direction)
 
-
+                           # answers=util.change_time_format(answers)
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
 
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
-    question_title = data_manager.QUESTIONS[question_index]['title']
+    given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), question_id)
+    question_title = given_question["title"]
+    # question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
+    # question_title = data_manager.QUESTIONS[question_index]['title']
 
     if request.method == 'POST':
-        data_to_save = data_manager.ANSWERS
+
 
         if answer_id:
-            answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
-            data_to_save[answer_index]['message'] = request.form['answer_m']
-            data_to_save[answer_index]['submission_time'] = str(int(time.time()))
+            # answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
+            data_to_save = {}
+            data_to_save = {"message": request.form['answer_m'],
+                            'submission_time': datetime.now()}
+            data_manager.update_data_in_table("answer", data_to_save, {"id": answer_id})
         else:
-            data_to_save.append({'id': util.find_next_id(data_to_save),
-                                 'submission_time': str(int(time.time())),
+            data_to_save = ({
+                                 'submission_time':  datetime.now(),
                                  'vote_number': '0',
                                  'question_id': question_id,
                                  'message': request.form['answer_m']
                                  })
-
-        connection.save_file(data_to_save, data_manager.ANSWERS_FILE_PATH)
+            data_manager.insert_data_to_table("answer", data_to_save)
 
         return redirect('/questions/' + question_id)
 
     if answer_id:
-        answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
-        answer_message = data_manager.ANSWERS[answer_index]['message']
+        answer_message = data_manager.get_from_table_condition("answer", {"id" : answer_id})[0]["message"]
 
     return render_template('answer.html',
                            answer_id=answer_id, answer_message=answer_message,
@@ -177,7 +168,7 @@ def add_question(message=None, title=None, question_id=None, table="question"):
                                  'title': request.form['title_m'].capitalize(),
                                  'image': None
                                  }
-            print(data_to_save)
+            # print(data_to_save)
             data_manager.insert_data_to_table(table, data_to_save)
         else:
             data_to_save = { 'message': request.form['question_m'].capitalize(),
