@@ -108,3 +108,5 @@ ENV/
 .idea/
 
 test.py
+*.csv
+/sample_data/*.csv

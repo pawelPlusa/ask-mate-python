@@ -1,11 +1,11 @@
-'''
+"""
 This module defines additional functions.
-'''
-# import datetime
-import time
+"""
+
+import datetime
 import copy
 import data_manager
-from flask import Flask, redirect
+
 
 """
 from this place we add functions from sprint#2 (sql)
@@ -13,6 +13,7 @@ from this place we add functions from sprint#2 (sql)
 
 def get_single_row(data, searched_id):
     """ takes single row from database """
+
     return [row for row in data if row["id"] == int(searched_id)][0]
 
 def check_if_vote(table,question_list, question_id, vote):
@@ -34,6 +35,7 @@ def check_if_vote(table,question_list, question_id, vote):
 FUNCTIONS FROM SPRINT#1
 """
 
+
 #TODO: DELETE UTLILS FUNCTION->CSV AFTER UPDATE ALL TO SQL
 
 def find_answers_by_question(question_id: str, answers_file: list) -> list:
@@ -50,12 +52,14 @@ def find_answers_by_question(question_id: str, answers_file: list) -> list:
 
 def change_time_format(datafile):
     """
-    Takes list of dics and changes time format for more human friendly.
+    Takes list of dicts and changes time format for more human friendly.
     Should be used only when passing data to html
     """
     datafile_with_dates = copy.deepcopy(datafile)
+
     for single_dict in datafile_with_dates:
         single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")
+
     return datafile_with_dates
 
 
