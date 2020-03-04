@@ -31,6 +31,18 @@ def get_all_from_given_table(cursor, table_name):
     result = cursor.fetchall()
     return result
 
+
+@connection.connection_handler
+def get_from_table_condition(cursor, table_name, condition: dict):
+    """
+    :rtype: list of dicts
+    """
+    query = f""" SELECT * FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
+
+    cursor.execute(query, condition)
+    result = cursor.fetchall()
+    return result
+
 @connection.connection_handler
 def update_data_in_table(cursor, table_name: str, data_to_update: dict, condition: dict):
     """

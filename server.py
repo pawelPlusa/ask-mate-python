@@ -86,27 +86,21 @@ def show_questions(sorted_by,direction, table="question"):
 @app.route("/questions/<question_id>")
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
-def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
+def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0,):
 
 #TODO: Change it to sql
 
-    answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
-    question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)
-    question_title = data_manager.QUESTIONS[question_index]['title']
-    question_message = data_manager.QUESTIONS[question_index]['message']
-    answers = util.find_answers_by_question(question_id, data_manager.ANSWERS)
+    given_question=util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id))
+    print(given_question)
+    answers = data_manager.get_from_table_condition("answer", {"id":question_id})
 
-    # TODO: following block move to new function:
+    question_title = given_question["title"]
+    question_message = given_question["message"]
+
+    # TODO: fix submission_time sort:
 
     if vote:
-        votes_no = int(data_manager.ANSWERS[answer_index]["vote_number"])
-        if vote == "vote_down" and votes_no > 0:
-            votes_no -= 1
-        elif vote == "vote_up":
-            votes_no += 1
-        data_manager.ANSWERS[answer_index]["vote_number"] = str(votes_no)
-        connection.save_file(data_manager.ANSWERS, data_manager.ANSWERS_FILE_PATH)
-
+        util.check_if_vote("answer", answers, answer_id, vote)
         return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
