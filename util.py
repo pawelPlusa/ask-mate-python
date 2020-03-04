@@ -16,6 +16,7 @@ def get_single_row(data, searched_id):
 
     return [row for row in data if row["id"] == int(searched_id)][0]
 
+
 def check_if_vote(table,question_list, question_id, vote):
 
     row_to_edit = get_single_row(question_list, question_id)

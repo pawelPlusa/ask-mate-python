@@ -58,6 +58,7 @@ def delete(question_id, confirmation=None, answer_id=None, status=None):
 def show_questions_list(question_id=None, vote=None, table="question"):
 
     question_list = data_manager.get_all_from_given_table(table)
+    print(question_list)
     sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
 
     # sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
@@ -193,5 +194,5 @@ def add_question(message=None, title=None, question_id=None, table="question"):
 if __name__ == "__main__":
     app.run(
         debug=True,
-        port=8000
+        port=8070
     )
