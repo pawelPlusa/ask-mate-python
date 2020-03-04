@@ -19,11 +19,7 @@ def get_connection_string():
     host = os.environ.get('PSQL_HOST')
     database_name = os.environ.get('PSQL_DB_NAME')
 
-    env_variables_defined = user_name and password and host and database_name
-
-    print(user_name, password, host, database_name)
-
-    if env_variables_defined:
+    if user_name and password and host and database_name:
 
         return 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
             user_name=user_name,
@@ -41,8 +37,7 @@ def open_database():
     """
 
     try:
-        connection_string = get_connection_string()
-        connection = psycopg2.connect(connection_string)
+        connection = psycopg2.connect(get_connection_string())
         connection.autocommit = True
 
     except psycopg2.DatabaseError as exception:
@@ -59,11 +54,11 @@ def connection_handler(function):
 
     def wrapper(*args, **kwargs):
         connection = open_database()
-        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        ret_value = function(dict_cur, *args, **kwargs)
-        dict_cur.close()
+        dict_cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        return_value = function(dict_cursor, *args, **kwargs)
+        dict_cursor.close()
         connection.close()
-        return ret_value
+        return return_value
 
     return wrapper
 

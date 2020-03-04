@@ -1,6 +1,6 @@
-'''
+"""
 This module defines additional functions.
-'''
+"""
 
 import time
 import copy
