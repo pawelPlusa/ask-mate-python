@@ -34,13 +34,19 @@ def get_all_from_given_table(cursor, table_name: str):
 @connection.connection_handler
 def get_from_table_condition(cursor, table_name, condition: dict):
     """
-    :rtype: list of dicts
+    :rtype: list of dicts or dict in case of one row
     """
     query = f""" SELECT * FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
 
     cursor.execute(query, condition)
     result = cursor.fetchall()
+    # print(f"result {result}")
     return result
+    # if len(result)>1:
+    #     return result
+    # else:
+    #     # returns dict
+    #     return next(iter(result))
 
 
 @connection.connection_handler
@@ -76,11 +82,10 @@ def delete_data_in_table(cursor, table_name, condition):
     update_query = f"""DELETE FROM {table_name} """
     update_query += f"""WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"""
 
-    data_to_update.update(condition)
-    cursor.execute(update_query, data_to_update)
+    cursor.execute(update_query, condition)
 
     # print(update_query)
-    print(f"cmfff {cursor.mogrify(update_query, condition)}")
+    # print(f"cmfff {cursor.mogrify(update_query, condition)}")
     # cursor.execute(update_query, condition)
     # print(cursor.query)
     return None
