@@ -24,8 +24,8 @@ app = Flask(__name__)
 @app.route("/")
 def start():
     sorted_questions = sorted(data_manager.get_all_from_given_table("question"), key=lambda i: i['submission_time'], reverse=1)
-
-    return render_template("index.html", sorted_questions=sorted_questions,
+    # print(sorted_questions)
+    return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:])
 
 @app.route("/delete/<question_id>")
@@ -52,7 +52,7 @@ def delete(question_id, confirmation=None, answer_id=None, status=None):
 
 
 # Łukasz
-@app.route("/list2")
+
 @app.route("/list")
 @app.route("/list/<question_id>/<vote>")
 def show_questions_list(question_id=None, vote=None, table="question"):
@@ -62,28 +62,11 @@ def show_questions_list(question_id=None, vote=None, table="question"):
 
     # sorted_questions = sorted(data_manager.QUESTIONS, key=lambda i: i['submission_time'], reverse=1)
 
-    # print(f"question_index {question_index}")
     # TODO: following block move to new function:
-
     if vote:
-
-        row_to_edit = util.get_single_row(question_list, question_id)
-
-        votes_no = int(row_to_edit["vote_number"])
-        if vote == "vote_down" and votes_no > 0:
-            votes_no -= 1
-        elif vote == "vote_up":
-            votes_no += 1
-
-        data_to_update = {"vote_number" : str(votes_no)}
-
-        sql_condition = {"id" : question_id}
-        data_manager.update_data_in_table(table, data_to_update, sql_condition)
-
-
+        util.check_if_vote(table, question_list, question_id, vote)
         return redirect("/list", code=303)
-
-    return render_template("list.html", sorted_questions=(sorted_question_list))
+    return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list))
 
 
 @app.route("/list/<sorted_by>/<int:direction>")
@@ -105,7 +88,7 @@ def show_questions(sorted_by,direction, table="question"):
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
-#TODO: Change it to sql - Pawel
+#TODO: Change it to sql
 
     answer_index = util.find_index_of_dict_by_id(data_manager.ANSWERS, answer_id)
     question_index = util.find_index_of_dict_by_id(data_manager.QUESTIONS, question_id)

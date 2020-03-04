@@ -38,7 +38,7 @@ def update_data_in_table(cursor, table_name: str, data_to_update: dict, conditio
     for key in data_to_update:
         update_query += f"""{key} = %({key})s, """
     update_query = update_query.rstrip(", ")
-    # I Do not understand next line
+
     update_query += f""" WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
     data_to_update.update(condition)
 

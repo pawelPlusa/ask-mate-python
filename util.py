@@ -2,8 +2,10 @@
 This module defines additional functions.
 """
 
-import time
+import datetime
 import copy
+import data_manager
+
 
 """
 from this place we add functions from sprint#2 (sql)
@@ -13,6 +15,20 @@ def get_single_row(data, searched_id):
     """ takes single row from database """
 
     return [row for row in data if row["id"] == int(searched_id)][0]
+
+def check_if_vote(table,question_list, question_id, vote):
+
+    row_to_edit = get_single_row(question_list, question_id)
+    votes_no = int(row_to_edit["vote_number"])
+    if vote == "vote_down" and votes_no > 0:
+        votes_no -= 1
+    elif vote == "vote_up":
+        votes_no += 1
+
+    data_to_update = {"vote_number" : str(votes_no)}
+    sql_condition = {"id" : question_id}
+    data_manager.update_data_in_table(table, data_to_update, sql_condition)
+    # return redirect("/list", code=303)
 
 
 """
@@ -40,8 +56,9 @@ def change_time_format(datafile):
     Should be used only when passing data to html
     """
     datafile_with_dates = copy.deepcopy(datafile)
+
     for single_dict in datafile_with_dates:
-        single_dict["submission_time"] = time.strftime("%d %m %Y, %H:%M", time.localtime(int(single_dict["submission_time"])))
+        single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")
 
     return datafile_with_dates
 
