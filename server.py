@@ -28,6 +28,7 @@ def start():
     return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:])
 
+
 @app.route("/delete/<question_id>")
 @app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/answer/<question_id>/<answer_id>")
