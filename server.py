@@ -67,8 +67,25 @@ def show_questions_list(question_id=None, vote=None, table="question"):
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list))
 
 
+@app.route("/search")
+def search_for_questions():
+    message = title = ("%"+request.args.get("sphrase")+"%").lower()
+    question_id_from_answers = data_manager.get_from_table_condition_like("answer", {"message" : message}, "question_id AS id")
+    question_id_from_questions = data_manager.get_from_table_condition_like("question", {"message" : message, "title" : title}, "id")
+    all_question_id = question_id_from_questions + question_id_from_answers
+
+    if all_question_id:
+        search_result = []
+        for one_question_id in all_question_id:
+            search_result.append(data_manager.get_from_table_condition("question",one_question_id)[0])
+        return render_template("/list.html", sorted_questions=util.change_time_format(search_result))
+    else:
+
+        return render_template("/list.html", message="There is no record matching your criteria")
+
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction, table="question"):
+
     question_list = data_manager.get_all_from_given_table(table)
     sorted_questions = sorted(question_list, key=lambda i: i[sorted_by], reverse=direction)
 
@@ -83,11 +100,29 @@ def show_questions(sorted_by,direction, table="question"):
 
 
 @app.route("/questions/<question_id>")
+def show_question(question_id):
+    given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
+    answers = sorted(data_manager.get_from_table_condition("answer", {"question_id": question_id}),
+                     key=lambda i: i["submission_time"], reverse=True)
+    view_counter = given_question["view_number"] + 1
+    data_manager.update_data_in_table("question", {"view_number" : view_counter}, {"id" : question_id})
+    question_title = given_question["title"]
+    question_message = given_question["message"]
+
+    return render_template('questions.html',
+                           question_id=question_id, question_title=question_title,
+                           question_message=question_message, answers=util.change_time_format(answers))
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
-    given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id)) # TODO: what for? is it not easier to SELECT single row FROM table?
+    # if not answer_id and vote:
+
+
+
+    # given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id)) # TODO: what for? is it not easier to SELECT single row FROM table?
+    given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
+
     answers = sorted(data_manager.get_from_table_condition("answer", {"question_id": question_id}),
                      key=lambda i: i["submission_time"], reverse=True)
     question_title = given_question["title"]
@@ -104,7 +139,7 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=answers ,
+                           question_message=question_message, answers=util.change_time_format(answers) ,
                            direction=direction)
 
 
@@ -112,7 +147,8 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
 
-    given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), question_id)  # TODO: what for? is it not easier to SELECT single row FROM table?
+    # given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), question_id)  # TODO: what for? is it not easier to SELECT single row FROM table?
+    given_question = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
     question_title = given_question["title"]
 
     if request.method == 'POST':
@@ -175,5 +211,6 @@ def add_question(message=None, title=None, question_id=None, table="question"):
 if __name__ == "__main__":
     app.run(
         debug=True,
-        port=8000
+        host='0.0.0.0',
+        port=6969
     )

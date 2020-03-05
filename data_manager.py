@@ -12,12 +12,33 @@ def get_all_from_given_table(cursor, table_name: str):
 
 
 @connection.connection_handler
+def get_from_table_condition_like(cursor, table_name, condition: dict, what_extract="*", type_of_condition="LIKE"):
+    """
+    :rtype: list of dicts or dict in case of one row
+    """
+    """
+    
+    """
+    print(f"condition {condition}")
+    query = f""" SELECT {what_extract} FROM {table_name} WHERE LOWER ("""
+    for key in condition:
+        query += f"""{key}) {type_of_condition} %({key})s OR LOWER ("""
+    query = query.rstrip("OR LOWER (") + ";"
+
+    print(query)
+    cursor.execute(query, condition)
+    result = cursor.fetchall()
+
+    return result
+
+@connection.connection_handler
 def get_from_table_condition(cursor, table_name, condition: dict, what_extract="*"):
     """
     :rtype: list of dicts or dict in case of one row
     """
     query = f""" SELECT {what_extract} FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
-
+    print(query)
+    print(cursor.mogrify(query, condition))
     cursor.execute(query, condition)
     result = cursor.fetchall()
 
