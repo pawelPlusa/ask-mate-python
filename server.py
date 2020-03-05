@@ -32,15 +32,23 @@ def start():
 @app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/answer/<question_id>/<answer_id>")
 @app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
-def delete(question_id, confirmation=None, answer_id=None, status=None):
+def delete(question_id, confirmation=None, answer_id=None, status=None, question_tag_id=None):
 
     if confirmation:
         if answer_id:
-            answer_sql_conditional = { "id" : answer_id}
+            answer_sql_conditional = { "id" : int(answer_id)}
             data_manager.delete_data_in_table("answer", answer_sql_conditional)
+        elif question_tag_id:
+            pass
+
         else:
-            data_manager.delete_data_in_table("answer", {"question_id" : question_id})
-            data_manager.delete_data_in_table("question", {"id" : question_id} )
+            answers_id_with_q_id = data_manager.get_from_table_condition("answer", {"question_id" : question_id}, "id")
+            for single_answer_id in answers_id_with_q_id:
+                 data_manager.delete_data_in_table("comment", single_answer_id)
+            data_manager.delete_data_in_table("comment", {"question_id" : int(question_id)})
+            data_manager.delete_data_in_table("answer", {"question_id" : int(question_id)})
+            data_manager.delete_data_in_table("question_tag", {"question_id" : int(question_id)})
+            data_manager.delete_data_in_table("question", {"id" : int(question_id)} )
 
         status = True
 
@@ -87,7 +95,8 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 #TODO: Change it to sql
 
     given_question=util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id))
-    answers = sorted(data_manager.get_from_table_condition("answer", {"question_id":question_id}), key = lambda i:i["submission_time"], reverse=True)
+    answers = data_manager.get_from_table_condition("answer",  {"question_id":question_id})
+    # answers = sorted(data_manager.get_from_table_condition("answer", {"question_id":question_id}), key = lambda i:i["submission_time"], reverse=True)
     # print(f"answers {answers}")
     question_title = given_question["title"]
     question_message = given_question["message"]

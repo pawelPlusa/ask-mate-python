@@ -32,11 +32,11 @@ def get_all_from_given_table(cursor, table_name: str):
 
 
 @connection.connection_handler
-def get_from_table_condition(cursor, table_name, condition: dict):
+def get_from_table_condition(cursor, table_name, condition: dict, what_extract="*"):
     """
     :rtype: list of dicts or dict in case of one row
     """
-    query = f""" SELECT * FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
+    query = f""" SELECT {what_extract} FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
 
     cursor.execute(query, condition)
     result = cursor.fetchall()
@@ -104,3 +104,5 @@ def insert_data_to_table(cursor, table_name, data_to_insert):
         insert_query += f"%({key})s, "
     insert_query = ")".join(insert_query.rsplit(", ", 1))
     cursor.execute(insert_query,data_to_insert)
+
+
