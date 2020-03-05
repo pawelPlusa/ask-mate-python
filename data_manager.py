@@ -1,25 +1,5 @@
 import connection
 
-# TODO: Remove
-QUESTION_FILE_PATH = "sample_data/question.csv"
-ANSWERS_FILE_PATH = "sample_data/answer.csv"
-
-QUESTIONS = connection.open_file(QUESTION_FILE_PATH)
-ANSWERS = connection.open_file(ANSWERS_FILE_PATH)
-
-
-#just a template for further functions
-
-@connection.connection_handler
-def get_mentor_names_by_first_name(cursor, first_name):
-    cursor.execute("""
-                    SELECT first_name, last_name FROM mentors
-                    WHERE first_name = %(first_name)s ORDER BY first_name;
-                   """,
-                   {'first_name': first_name})
-    names = cursor.fetchall()
-    return names
-
 
 @connection.connection_handler
 def get_all_from_given_table(cursor, table_name: str):
@@ -40,7 +20,7 @@ def get_from_table_condition(cursor, table_name, condition: dict):
 
     cursor.execute(query, condition)
     result = cursor.fetchall()
-    # print(f"result {result}")
+
     return result
     # if len(result)>1:
     #     return result
@@ -80,27 +60,22 @@ def update_data_in_table(cursor, table_name: str, data_to_update: dict, conditio
 def delete_data_in_table(cursor, table_name, condition):
 
     update_query = f"""DELETE FROM {table_name} """
-    update_query += f"""WHERE {list(condition.keys())[0]} = %({list(condition.keys())[0]})s;"""
+    update_query += f"""WHERE {list(condition)[0]} = %({list(condition)[0]})s;"""
 
     cursor.execute(update_query, condition)
-
-    # print(update_query)
-    # print(f"cmfff {cursor.mogrify(update_query, condition)}")
-    # cursor.execute(update_query, condition)
-    # print(cursor.query)
-    return None
 
 
 @connection.connection_handler
 def insert_data_to_table(cursor, table_name, data_to_insert):
 
     insert_query = f"INSERT INTO {table_name} ("
-    for key in data_to_insert.keys():
+    for key in data_to_insert:
         insert_query += f"{key}, "
-    insert_query = ")".join(insert_query.rsplit(", ", 1))
+    insert_query = insert_query.rstrip(', ') + ")"
 
     insert_query += f" VALUES ("
-    for key in data_to_insert.keys():
+    for key in data_to_insert:
         insert_query += f"%({key})s, "
-    insert_query = ")".join(insert_query.rsplit(", ", 1))
-    cursor.execute(insert_query,data_to_insert)
+    insert_query = insert_query.rstrip(', ') + ")"
+
+    cursor.execute(insert_query, data_to_insert)
