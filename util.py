@@ -94,6 +94,9 @@ def purge_answer_list(answers, question_id):
             purged_answers.append(answer)
     return purged_answers
 
+def proper_capitalization(string):
+
+    return string[0].capitalize() + string[1:] if string else ""
 """
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SQL FUNCTIONS SHOULD BE ADDED ON TOP!!!!!!!!!!!!!!!!!!!!!!

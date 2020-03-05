@@ -63,7 +63,7 @@ def show_questions_list(question_id=None, vote=None, table="question"):
 
     if vote:
         util.check_if_vote(table, question_list, question_id, vote)
-        return redirect("/list", code=303)
+        return redirect("/vote_given", code=303)
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list))
 
 
@@ -104,8 +104,7 @@ def show_question(question_id):
     given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
     answers = sorted(data_manager.get_from_table_condition("answer", {"question_id": question_id}),
                      key=lambda i: i["submission_time"], reverse=True)
-    view_counter = given_question["view_number"] + 1
-    data_manager.update_data_in_table("question", {"view_number" : view_counter}, {"id" : question_id})
+    data_manager.update_data_in_table("question", {"view_number" : (given_question["view_number"] + 1)}, {"id" : question_id})
     question_title = given_question["title"]
     question_message = given_question["message"]
 
@@ -130,7 +129,8 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 
     if vote:
         util.check_if_vote("answer", answers, answer_id, vote)
-        return redirect("/questions/" + question_id, code=303)
+        return redirect("/vote_given/"+question_id, code=303)
+        # return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
         answers.sort(key=lambda item: (item[sorted_by]), reverse=direction)
@@ -153,14 +153,14 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
     if request.method == 'POST':
         if answer_id:
-            data_to_save = {"message": request.form['answer_m'],
+            data_to_save = {"message": util.proper_capitalization(request.form['answer_m']),
                             'submission_time': datetime.now()}
             data_manager.update_data_in_table("answer", data_to_save, {"id": answer_id})
         else:
             data_to_save = ({'submission_time':  datetime.now(),
                              'vote_number': '0',
                              'question_id': question_id,
-                             'message': request.form['answer_m']
+                             'message': util.proper_capitalization(request.form['answer_m'])
                             })
 
             data_manager.insert_data_to_table("answer", data_to_save)
@@ -180,7 +180,8 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 def add_question(message=None, title=None, question_id=None, table="question"):
 
     if request.method == 'GET' and question_id:
-        single_row = util.get_single_row(data_manager.get_all_from_given_table(table), int(question_id))  # TODO: what for? is it not easier to SELECT single row FROM table?
+        single_row = given_question = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
+        # single_row = util.get_single_row(data_manager.get_all_from_given_table(table), int(question_id))  # TODO: what for? is it not easier to SELECT single row FROM table?
         title = single_row["title"]
         message = single_row["message"]
     elif request.method == 'POST':
@@ -188,16 +189,16 @@ def add_question(message=None, title=None, question_id=None, table="question"):
             data_to_save = {'submission_time': datetime.now(),
                             'view_number': 0,
                             'vote_number': 0,
-                            'message': request.form['question_m'].capitalize(),
-                            'title': request.form['title_m'].capitalize(),
+                            'message': util.proper_capitalization(request.form['question_m']),
+                            'title': util.proper_capitalization(request.form['title_m']),
                             'image': None
                             }
 
             data_manager.insert_data_to_table(table, data_to_save)
         else:
-            data_to_save = {'message': request.form['question_m'].capitalize(),
+            data_to_save = {'message': util.proper_capitalization(request.form['question_m']),
                             'submission_time': datetime.now(),
-                            'title': request.form['title_m'].capitalize()
+                            'title': util.proper_capitalization(request.form['title_m'])
                             }
 
             sql_conditions = {'id': question_id}
@@ -207,6 +208,14 @@ def add_question(message=None, title=None, question_id=None, table="question"):
 
     return render_template('note.html', message=message, title=title, question_id=question_id)
 
+@app.route("/vote_given/<int:question_id>")
+@app.route("/vote_given")
+def thank_you(question_id=None):
+    if question_id:
+
+        return render_template("vote_given.html", question_id=question_id)
+    else:
+        return render_template("vote_given.html")
 
 if __name__ == "__main__":
     app.run(
