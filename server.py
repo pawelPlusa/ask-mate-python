@@ -62,7 +62,7 @@ def show_questions_list(question_id=None, vote=None, table="question"):
     sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
 
     if vote:
-        util.check_if_vote(table, question_list, question_id, vote)
+        util.check_if_vote(table, question_id, vote)
         return redirect("/vote_given", code=303)
     return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list))
 
@@ -115,22 +115,15 @@ def show_question(question_id):
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
 
-    # if not answer_id and vote:
-
-
-
-    # given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), int(question_id)) # TODO: what for? is it not easier to SELECT single row FROM table?
     given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
-
     answers = sorted(data_manager.get_from_table_condition("answer", {"question_id": question_id}),
                      key=lambda i: i["submission_time"], reverse=True)
     question_title = given_question["title"]
     question_message = given_question["message"]
 
     if vote:
-        util.check_if_vote("answer", answers, answer_id, vote)
+        util.check_if_vote("answer", answer_id, vote)
         return redirect("/vote_given/"+question_id, code=303)
-        # return redirect("/questions/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
         answers.sort(key=lambda item: (item[sorted_by]), reverse=direction)
@@ -147,7 +140,6 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
 
-    # given_question = util.get_single_row(data_manager.get_all_from_given_table("question"), question_id)  # TODO: what for? is it not easier to SELECT single row FROM table?
     given_question = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
     question_title = given_question["title"]
 
@@ -180,8 +172,7 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 def add_question(message=None, title=None, question_id=None, table="question"):
 
     if request.method == 'GET' and question_id:
-        single_row = given_question = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
-        # single_row = util.get_single_row(data_manager.get_all_from_given_table(table), int(question_id))  # TODO: what for? is it not easier to SELECT single row FROM table?
+        single_row = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
         title = single_row["title"]
         message = single_row["message"]
     elif request.method == 'POST':

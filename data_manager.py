@@ -19,13 +19,10 @@ def get_from_table_condition_like(cursor, table_name, condition: dict, what_extr
     """
     
     """
-    print(f"condition {condition}")
     query = f""" SELECT {what_extract} FROM {table_name} WHERE LOWER ("""
     for key in condition:
         query += f"""{key}) {type_of_condition} %({key})s OR LOWER ("""
     query = query.rstrip("OR LOWER (") + ";"
-
-    print(query)
     cursor.execute(query, condition)
     result = cursor.fetchall()
 
@@ -37,8 +34,6 @@ def get_from_table_condition(cursor, table_name, condition: dict, what_extract="
     :rtype: list of dicts or dict in case of one row
     """
     query = f""" SELECT {what_extract} FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
-    print(query)
-    print(cursor.mogrify(query, condition))
     cursor.execute(query, condition)
     result = cursor.fetchall()
 
@@ -69,13 +64,9 @@ def update_data_in_table(cursor, table_name: str, data_to_update: dict, conditio
     update_query += f""" WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
     data_to_update.update(condition)
 
-    # print(update_query)
-    # print(f"cmfff {cursor.mogrify(update_query, data_to_update)}")
     cursor.execute(update_query, data_to_update)
-    # print(cursor.query)
 
 
-# TODO: Finish delete - Pawel
 
 @connection.connection_handler
 def delete_data_in_table(cursor, table_name, condition):
