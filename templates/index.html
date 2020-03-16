@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="style.css") }}'>
 </head>
 <body>
+<div class="container">
+<p class="left_marigin"> </p>
 <h1>Welcome to ASK MATE</h1>
 <table class="menu_list">
     <tr>
@@ -15,8 +17,11 @@
         <td><a href="/note"> Add question </a></td>
     </tr>
 </table>
-
-    <h2>Last five questions were:</h2>
+    <form class="search_bar" action="/search" method="get" >
+        <input type="text" name="sphrase" id="search_phrase" required>
+        <input type="submit" value="Search">
+    </form>
+    <h2>Last five questions were :</h2>
 
     <table class="table_all">
         <thead>
@@ -42,5 +47,6 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
 </body>
 </html>

@@ -1,3 +1,6 @@
+templates/list2.html
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -105,3 +108,5 @@ ENV/
 .idea/
 
 test.py
+*.csv
+/sample_data/*.csv

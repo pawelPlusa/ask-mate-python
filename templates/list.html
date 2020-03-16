@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link type="text/css" rel="stylesheet" href='{{ url_for("static", filename="style.css") }}'>
+    <!-- <link type="text/css" rel="stylesheet" href='{{ url_for("static", filename="style.css") }}'> -->
     <meta charset="UTF-8">
     <title>Question list</title>
 </head>
+
 <body>
 <h2>Question list: </h2>
 
 <table class="menu_list"><tr>
+    <form id="search_box" action="/search" method="get">
+        <input type="text" name="sphrase" id="search_phrase" required>
+        <input type="submit" value="Search">
     <td><a class="a_at_list" href="/note"> Add question </a></td>
 <p></p>
-</tr><tr>
+
+</tr>
+    <tr>
 <td><a class="a_at_list" href="/"> Back to main page </a></td>
 </tr></table>
-
-<table class="table_list">
+{% if sorted_questions %}
+    <table class="table_list">
     <thead>
 
     <tr>
@@ -51,8 +57,10 @@
             </td>
         </tr>
     {% endfor %}
-</table>
-
+    </table>
+{% else %}
+    <h1> {{message}}</h1>
+{% endif %}
 
 </body>
 </html>
