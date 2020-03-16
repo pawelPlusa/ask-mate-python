@@ -4,13 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>{{ 'Add' if  not question_id else 'Edit' }} question</title>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="style.css") }}'>
 </head>
 
 <body>
-    <h3>{{ 'Add' if  not question_id else 'Edit' }} question</h3>
-
     <form method="post">
-    <label for="question-add-edit">Your question:</label>
+    <label id='head' for="question-add-edit">{{ 'Add' if  not question_id else 'Edit' }} question:</label>
     <p>Title: </p>
     <p><input type="text" name="title_m" minlength="5" maxlength="50" value="{{title if title}}" required size="40"> </p>
     <p>Message: </p>

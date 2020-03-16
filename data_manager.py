@@ -28,6 +28,7 @@ def get_from_table_condition_like(cursor, table_name, condition: dict, what_extr
 
     return result
 
+
 @connection.connection_handler
 def get_from_table_condition(cursor, table_name, condition: dict, what_extract="*"):
     """
@@ -65,7 +66,6 @@ def update_data_in_table(cursor, table_name: str, data_to_update: dict, conditio
     data_to_update.update(condition)
 
     cursor.execute(update_query, data_to_update)
-
 
 
 @connection.connection_handler
