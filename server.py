@@ -45,6 +45,8 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
             for single_answer_id in answers_id_with_q_id:
                 data_manager.delete_data_in_table("comment", single_answer_id)
 
+    # TODO: Remove to SQL
+
             data_manager.delete_data_in_table("comment", {"question_id": int(question_id)})
             data_manager.delete_data_in_table("answer", {"question_id": int(question_id)})
             data_manager.delete_data_in_table("question_tag", {"question_id": int(question_id)})
