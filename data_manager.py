@@ -36,6 +36,7 @@ def get_from_table_condition(cursor, table_name, condition: dict, what_extract="
     """
     query = f""" SELECT {what_extract} FROM {table_name} WHERE {next(iter(condition))} = %({next(iter(condition))})s;"""
     cursor.execute(query, condition)
+
     result = cursor.fetchall()
 
     return result
