@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, escape, session, url_for
 import data_manager
 import util
 from datetime import datetime
 
 app = Flask(__name__)
-
+app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def start():
@@ -12,7 +12,9 @@ def start():
                               key=lambda i: i['submission_time'], reverse=1)
 
     return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
-                           headers=list(sorted_questions[0].keys())[1:])
+                           headers=list(sorted_questions[0].keys())[1:],
+                           session = escape(session["username"]) if 'username' in session else 0
+                           )
 
 
 @app.route("/delete/<question_id>")
@@ -215,8 +217,32 @@ def user_registration():
             "registration_date": datetime.now()
         }
         data_manager.insert_data_to_table("users", data_to_insert)
-        return render_template("user_registered.html")
+        return render_template("redirect.html", why_redirected_text="Registration successful")
 
+
+@app.route("/log_in", methods=["GET", "POST"])
+def user_login():
+    if request.method == "GET":
+
+        return render_template("login.html")
+
+    else:
+        try:
+            user_data = data_manager.get_from_table_condition("users", {"login": request.form["email"]})[0]
+        except:
+            return render_template("redirect.html", why_redirected_text="Wrong username or password",
+                                    where_redirect="log_in")
+        is_matching = util.verify_password(request.form["userpass"], user_data["password"])
+        if is_matching:
+            session['username'] = user_data["user_name"]
+
+            return render_template("redirect.html", why_redirected_text="You are now logged in")
+        return render_template("redirect.html", why_redirected_text="Wrong username or password")
+
+@app.route("/log_out")
+def user_logout():
+    session.pop('username', None)
+    return render_template("redirect.html", why_redirected_text="You have been logout")
 
 
 
