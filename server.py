@@ -203,6 +203,24 @@ def thank_you(question_id=None):
     else:
         return render_template("vote_given.html")
 
+@app.route("/registration", methods=["GET", "POST"])
+def user_registration():
+    if request.method == "GET":
+        return render_template("registration.html")
+    else:
+        data_to_insert = {
+            "login": request.form["email"],
+            "password": util.hash_password(request.form["userpass"]),
+            "user_name": request.form["username"],
+            "registration_date": datetime.now()
+        }
+        data_manager.insert_data_to_table("users", data_to_insert)
+        return render_template("user_registered.html")
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(
