@@ -7,13 +7,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 
-def render_redirect(message="You are not logged in", time=2):
-    """
-    function to shorten all redirects later
-    """
-    return render_template("redirect.html", why_redirected_text=message,
-                    where_redirect="log_in", time=time)
-
 
 @app.route("/")
 def start():
@@ -37,9 +30,10 @@ def start():
 @app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
 def delete(question_id, confirmation=None, answer_id=None, status=None, question_tag_id=None):
 
-    # util.action_if_not_logged()
     if "username" not in session:
-        return render_redirect()
+        return render_template("redirect.html",
+                               why_redirected_text="You are not logged in",
+                               where_redirect="log_in", time=2)
 
     if confirmation:
         if answer_id:
@@ -66,12 +60,14 @@ def show_questions_list(question_id=None, vote=None, table="question"):
 
     if vote:
         if "username" not in session:
-            return render_redirect()
+            return render_template("redirect.html", why_redirected_text="You are not logged in",
+                                   where_redirect="log_in", time=2)
 
         util.check_if_vote(table, question_id, vote)
         return redirect("/vote_given", code=303)
 
-    return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list),
+    return render_template("list.html",
+                           sorted_questions=util.change_time_format(sorted_question_list),
                            session=session)
 
 
@@ -137,8 +133,8 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 
     if vote:
         if "username" not in session:
-            return render_redirect()
-
+            return render_template("redirect.html", why_redirected_text="You are not logged in",
+                                   where_redirect="log_in", time=2)
         util.check_if_vote("answer", answer_id, vote)
         return redirect("/vote_given/"+question_id, code=303)
 
@@ -158,7 +154,8 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 def add_answer(question_id, answer_id=None, answer_message=None):
 
     if "username" not in session:
-        return render_redirect()
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                               where_redirect="log_in", time=2)
 
     given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
     question_title = given_question["title"]
@@ -193,7 +190,8 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 def add_question(message=None, title=None, question_id=None, table="question"):
 
     if "username" not in session:
-        return render_redirect()
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                               where_redirect="log_in", time=2)
 
     if request.method == 'GET' and question_id:
         single_row = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
@@ -250,9 +248,11 @@ def user_registration():
         try:
             data_manager.insert_data_to_table("users", data_to_insert)
         except psycopg2.errors.UniqueViolation:
-            return render_redirect("Registration fail (user with given e-mail already exists)", time=4)
+            return (render_template("redirect.html",
+                                    why_redirected_text="Registration fail (user with given e-mail already exists)",
+                                    time=4))
 
-        return render_redirect('Registration successful')
+        return render_template("redirect.html", why_redirected_text="Registration successful", time=2)
 
 
 @app.route("/log_in", methods=["GET", "POST"])
@@ -262,36 +262,37 @@ def user_login():
         return render_template("login.html")
 
     else:
-        try:
-            user_data = data_manager.get_from_table_condition("users", {"login": request.form["email"]})[0]
-        except:
-            return render_redirect('Wrong username or password')
+        user_data = data_manager.get_from_table_condition("users", {"login": request.form["email"]})
 
+        if not user_data:
+            return render_template("redirect.html", why_redirected_text="Wrong username or password",
+                                    where_redirect="log_in", time=2)
+
+        user_data = user_data[0]
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
             session['username'] = user_data["user_name"]
             session["user_id"] = user_data["id"]
 
-            return render_redirect("You are now logged in")
-        return render_redirect("Wrong username or password")
+            return render_template("redirect.html", why_redirected_text="You are now logged in", time=2)
+        return render_template("redirect.html", why_redirected_text="Wrong username or password", time=2)
 
 
 @app.route("/log_out")
 def user_logout():
     session.pop('username', None)
-    return render_redirect('You have been logout')
+    return render_template("redirect.html", why_redirected_text="You have been logout", time=2)
 
 
 @app.route("/users")
 def show_users():
     if "username"not in session:
-        return render_redirect()
-
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                               where_redirect="log_in", time=2)
     user_data = data_manager.get_all_user_data()
 
     headers = (list(user_data[0].keys()))
-    return render_template("users.html",
-                           user_data=util.change_time_format(user_data, "registration_date"),
+    return render_template("users.html", user_data=util.change_time_format(user_data, "registration_date"),
                            headers=headers)
 
 
