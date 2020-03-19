@@ -8,7 +8,7 @@
 <body>
 <div class="container">
 <p class="left_marigin"> </p>
-<h1>Welcome to ASK MATE {{session if session}}</h1>
+<h1>Welcome to ASK MATE {{ session if session }}</h1>
 <table class="menu_list">
     <tr>
         <td><a href="/list"> Show all questions </a></td>
@@ -23,9 +23,9 @@
     <tr>
         <td>
             {% if session %}
-            <a href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
+            <a href="{{ url_for("user_logout") }}"> Logout user: {{ session }} </a>
             {% else %}
-            <a href="{{ url_for("user_login")}}"> Log in </a>
+            <a href="{{ url_for("user_login") }}"> Log in </a>
             {% endif %}
         </td>
     </tr>

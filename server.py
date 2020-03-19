@@ -17,7 +17,6 @@ def start():
                            )
 
 
-
 @app.route("/delete/<question_id>")
 @app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/answer/<question_id>/<answer_id>")
@@ -28,7 +27,6 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
     if "username" not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                         where_redirect="log_in")
-
 
     if confirmation:
         if answer_id:
