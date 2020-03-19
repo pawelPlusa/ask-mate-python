@@ -11,12 +11,12 @@ app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 @app.route("/")
 def start():
     questions = data_manager.get_all_from_given_table("question")
-
+    print(session)
     if questions:
         sorted_questions = sorted(questions, key=lambda i: i['submission_time'], reverse=1)
         return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                                headers=list(sorted_questions[0].keys())[1:],
-                               session=escape(session["username"]) if 'username' in session else 0
+                               session=session
                                )
 
     else:
@@ -271,7 +271,7 @@ def user_login():
         user_data = user_data[0]
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
-            session['username'] = user_data["user_name"]
+            session['username'] = escape(user_data["user_name"])
             session["user_id"] = user_data["id"]
 
             return render_template("redirect.html", why_redirected_text="You are now logged in", time=2)
