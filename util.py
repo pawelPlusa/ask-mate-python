@@ -2,10 +2,25 @@
 This module defines additional functions.
 """
 
-import copy
-import data_manager
+import copy, data_manager, bcrypt
+
+"""
+FUNCTIONS FROM SPRINT#3
+"""
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
 
 
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+"""
+FUNCTIONS FROM SPRINT#2
+"""
 def check_if_vote(table, id, vote):
 
     sql_condition = {"id": int(id)}
@@ -31,6 +46,7 @@ def change_time_format(datafile):
 
     if type(datafile_with_dates) != list:
         list(datafile_with_dates)
+
 
     for single_dict in datafile_with_dates:
         single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <form method="post">
+
+            <label for="username"> Your username: </label>
+            <p><input type=text name=username minlength="3" required></p>
+            <label for="useremail"> Your email - used as login</label>
+            <p><input id="email" type=email name=email  size="30" min="3"
+                      pattern="*$+@+[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                      required placeholder="name@example.com"></p>
+            <label for="userpass"> Your password </label>
+            <p><input id="password" type=text name=userpass minlength="6" required
+                      placeholder="min 6 chars, small & capital letters"
+                      pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+            </p>
+            <p><input type=submit value=Register>
+
+        </form>
+
+</body>
+</html>
