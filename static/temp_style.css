@@ -36,26 +36,9 @@ table {
 .logo {
     max-height: 180px;
     max-width: 80px;
-
-.top_bar {
-    font-size: 0.8em;
-    width: 100%;
-    margin: auto;
-    background: #ddd;
-    text-align: justify;
-    overflow: hidden;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    min-height: auto;
 }
+.logo_user {
+    max-height: 50px;
+    max-width: 50px;
 
-a.top_button {
-    width: 100%;
-    margin: auto;
-    background: #ddd;
-    text-align: justify;
-    overflow: hidden;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    min-height: auto;
 }

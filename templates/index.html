@@ -3,43 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>ASK MATE</title>
-    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="style.css") }}'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="temp_style.css") }}'>
 </head>
 <body>
-<div class="container">
-<p class="left_marigin"> </p>
-<h1>Welcome to ASK MATE {{session if session}}</h1>
-<table class="menu_list">
-    <tr>
-        <td><a href="/list"> Show all questions </a></td>
-    </tr>
-    <tr>
-        <td><a href="/note"> Add question </a></td>
-    </tr>
-<!--    Added new links below -->
-    <tr>
-        <td><a href="{{ url_for("user_registration")}}"> Registration </a></td>
-    </tr>
-    <tr>
-        <td>
-            {% if session %}
-            <a href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
-        <td><a href="{{ url_for("show_users")}}"> Show user list </a></td>
-            {% else %}
-            <a href="{{ url_for("user_login")}}"> Log in </a>
+    <div class="container">
+        <div class="row">
+
+
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <a class="navbar-brand" href="#">
+                    <img src="/static/images/askmate_logo.png" class="logo" alt="logo">
+                </a>
+                 <a class="navbar-brand" href="/list"> Show all questions </a>
+                 <a class="navbar-brand" href="/note"> Add question </a>
+                 <a class="navbar-brand" href="{{ url_for("user_registration")}}"> Registration </a>
+
+                {% if session %}
+                <a class="navbar-brand" href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
+                <a class="navbar-brand" href="/users"> User list </a>
+                    <a class="navbar-brand" href="/user/<user_id>">
+                    <img src="/static/images/user_logo.png" class="logo_user" alt="user">
+                </a>
+                {% else %}
+            <a class="navbar-brand" href="{{ url_for("user_login")}}"> Log in </a>
             {% endif %}
-        </td>
-    </tr>
 
-</table>
-    <form class="search_bar" action="/search" method="get" >
-        <input type="text" name="sphrase" id="search_phrase" required>
-        <input type="submit" value="Search">
-    </form>
-    <h2>Last five questions were :</h2>
+                <form class="form-inline mr-sm-2" action="/search" method="get">
+                    <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search" name="sphrase" id="search_phrase" required >
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
 
-    <table class="table_all">
-        <thead>
+        <div class="row">
+            <div>
+
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+           <table>
+               <thead>
             <tr>
                 {% for header in headers %}
                     <th>{{(header.replace("_"," ").strip().title())}}</th>
@@ -61,7 +68,10 @@
                     {% endfor %}
             {% endfor %}
         </tbody>
-    </table>
+           </table>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>

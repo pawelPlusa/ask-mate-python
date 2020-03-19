@@ -11,7 +11,7 @@ def start():
     sorted_questions = sorted(data_manager.get_all_from_given_table("question"),
                               key=lambda i: i['submission_time'], reverse=1)
 
-    return render_template("temp_index.html", sorted_questions=util.change_time_format(sorted_questions),
+    return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                            headers=list(sorted_questions[0].keys())[1:],
                            session = escape(session["username"]) if 'username' in session else 0
                            )
