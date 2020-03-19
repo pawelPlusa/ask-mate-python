@@ -272,7 +272,7 @@ def user_logout():
 
 @app.route("/users")
 def show_users():
-    if not session:
+    if "username"not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in")
     user_data = data_manager.get_all_user_data()
