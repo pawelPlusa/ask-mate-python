@@ -13,7 +13,8 @@
     <tr>
 <td><a class="a_at_list" href="/"> Back to main page </a></td>
 </tr></table>
-    {% if user_data %}
+
+    {% if users_data %}
     <table class="table_list">
     <thead>
 
@@ -23,7 +24,7 @@
                 {% endfor %}
     </tr>
     </thead>
-    {% for line in user_data: %}
+    {% for line in users_data: %}
         <tr>
             {% for single_data in line.values(): %}
             <td> {{single_data}}</td>
@@ -31,6 +32,111 @@
         </tr>
     {% endfor %}
     </table>
+    {% elif user_data%}
+            <h3>Info about user {{user_data["single_user_data"][0]["user_name"]}}:</h3>
+            <table>
+                <thead>
+                        <tr>
+                            {% for header in user_data["single_user_data"][0].keys()%}
+                                {% if header != 'id'%}
+                                   <th> {{(header.replace("_"," ").strip().title())}}</th>
+                                {% endif %}
+
+                            {% endfor %}
+                        </tr>
+                </thead>
+                <tbody>
+                    {% for single_row in user_data["single_user_data"]%}
+                        <tr>
+                            {% for key,value in single_row.items()%}
+                                {% if key != 'id' %}
+                                    {% if key != 'title' %}
+                                        <td>
+                                            {{value}}
+                                        </td>
+                                    {% else %}
+                                        <td><a href="/questions/{{single_row["id"]}}">{{value}}</a></td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% if user_data["single_user_questions"]%}
+            <h3>Users questions:</h3>
+            <table>
+                <thead>
+                        <tr>
+                            {% for header in user_data["single_user_questions"][0].keys()%}
+                                {% if header != 'id'%}
+                                   <th> {{(header.replace("_"," ").strip().title())}}</th>
+                                {% endif %}
+
+                            {% endfor %}
+                        </tr>
+                </thead>
+                <tbody>
+                    {% for single_row in user_data["single_user_questions"]%}
+                        <tr>
+                            {% for key,value in single_row.items()%}
+                                {% if key != 'id' %}
+                                    {% if key != 'title' %}
+                                        <td>
+                                            {{value}}
+                                        </td>
+                                    {% else %}
+                                        <td><a href="/questions/{{single_row["id"]}}">{{value}}</a></td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+        {% endif %}
+        {% if user_data["single_user_answers"]%}
+            <h3>Users answers:</h3>
+
+            <table>
+                <thead>
+                        <tr>
+                            {% for header in user_data["single_user_answers"][0].keys()%}
+                                {% if header not in ("id", "question_id")%}
+                                   <th> {{(header.replace("_"," ").strip().title())}}</th>
+                                {% endif %}
+
+                            {% endfor %}
+                        </tr>
+                </thead>
+                <tbody>
+                    {% for single_row in user_data["single_user_answers"]%}
+                       <tr>
+                            {% for key,value in single_row.items()%}
+                                {% if key not in ("id", "question_id") %}
+                                    {% if key != 'message' %}
+                                        <td>
+                                            {{value}}
+                                        </td>
+                                    {% else %}
+                                        <td><a href="/questions/{{single_row["question_id"]}}">{{value}}</a></td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% endif %}
+        {% if user_data["single_user_comments"]%}
+
+        {% endif %}
+
+
+<p>"user darta"</p>
     {% else %}
     <h1> {{message}}</h1>
     {% endif %}

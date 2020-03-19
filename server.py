@@ -276,16 +276,48 @@ def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout", time=2)
 
-
+@app.route("/users/<user_id>")
 @app.route("/users")
-def show_users():
+def show_users(user_id=None):
     if "username"not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
-    user_data = data_manager.get_all_user_data()
+    if user_id:
+        question_columns = "id, submission_time, view_number, vote_number, title, message"
+        answer_columns = "id, question_id, submission_time, vote_number, message, accepted"
+        comment_columns = "id, submission_time, message"
+        all_single_user_data = {
+        "single_user_data": util.change_time_format(data_manager.get_all_user_data(int(user_id)), "registration_date"),
+        "single_user_questions": util.change_time_format(data_manager.get_from_table_condition(
+                                "question", {"user_id":user_id}, question_columns)),
+        "single_user_answers": util.change_time_format(data_manager.get_from_table_condition(
+                                "answer", {"user_id":user_id}, answer_columns)),
+        "single_user_comments": util.change_time_format(data_manager.get_from_table_condition(
+                                "comment", {"user_id":user_id}, comment_columns))
+        }
+        # data_to_pass = {"single_user_data": single_user_data, "single_user_questions": single_user_questions}
+        # single_user_data = util.change_time_format(data_manager.get_all_user_data(int(user_id)), "registration_date")
+        #
+        # single_user_questions = data_manager.get_from_table_condition("question", {"user_id":user_id}, question_columns)
+        # answer_columns = "id, submission_time, vote_number, message, accepted"
+        # single_user_answers = data_manager.get_from_table_condition("answer", {"user_id":user_id}, answer_columns)
+        # comment_columns = "id, submission_time, message"
+        # single_user_comments = data_manager.get_from_table_condition("comment", {"user_id":user_id}, comment_columns)
+        print(all_single_user_data)
+        # print(single_user_questions)
+        # print(single_user_answers)
+        # print(single_user_comments)
 
-    headers = (list(user_data[0].keys()))
-    return render_template("users.html", user_data=util.change_time_format(user_data, "registration_date"),
+
+
+
+        return render_template("users.html", user_data=all_single_user_data)
+
+
+    users_data = data_manager.get_all_user_data()
+
+    headers = (list(users_data[0].keys()))
+    return render_template("users.html", users_data=util.change_time_format(users_data, "registration_date"),
                            headers=headers)
 
 
