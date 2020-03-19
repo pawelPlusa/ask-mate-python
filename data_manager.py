@@ -98,3 +98,25 @@ def insert_data_to_table(cursor, table_name, data_to_insert):
 def get_columns_names(cursor, table_name):
     cursor.execute(f"SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = '{table_name}';")
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_user_data(cursor):
+    query = """select users.id as user_id,
+               user_name,
+               registration_date,
+               count(q.user_id) as total_questions,
+               count(a.user_id) as total_answers,
+               count(c.user_id) as total_comments,
+               reputation
+               from users
+               left join answer a on users.id = a.user_id
+               left join comment c on users.id = c.user_id
+               left join question q on users.id = q.user_id
+               group by users.id, user_name, registration_date, reputation
+            """
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    return result
+

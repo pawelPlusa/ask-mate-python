@@ -23,7 +23,9 @@
     <tr>
         <td>
             {% if session %}
-            <a href="{{ url_for("user_logout") }}"> Logout user: {{ session }} </a>
+            <a href="{{ url_for("user_logout") }}"> Logout user: {{session}} </a>
+        <td><a href="{{ url_for("show_users")}}"> Show user list </a></td>
+
             {% else %}
             <a href="{{ url_for("user_login") }}"> Log in </a>
             {% endif %}
