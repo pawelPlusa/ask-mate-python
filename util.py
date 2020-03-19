@@ -3,7 +3,7 @@ This module defines additional functions.
 """
 
 import copy, data_manager, bcrypt
-
+from flask import Flask, render_template, session, request
 """
 FUNCTIONS FROM SPRINT#3
 """
@@ -17,6 +17,13 @@ def hash_password(plain_text_password):
 def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+# def action_if_not_logged(info_for_user="You are not logged in", where_redirect="log_in"):
+#     if "username" not in session:
+#         print("fuuuck!!!!")
+#         return "ffffffffffff"
+#         return render_template("redirect.html", why_redirected_text=info_for_user,
+#                         where_redirect=where_redirect)
 
 """
 FUNCTIONS FROM SPRINT#2
