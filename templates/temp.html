@@ -6,29 +6,22 @@
     <title>Question list<</title>
 </head>
 <body>
-<div class="main_look">
-    <table class="top_table">
+<div>
+    <table>
         <tr>
             <td>
-                <img src="/static/images/askmate_logo.png" class="logo" alt="logo">
-
+                <a class="a_at_list" href="/note"> Add question </a>
             </td>
-            <td>
-                <a class="menu_list" href="/note"> Add question </a>
-            </td>
-
-
             <td>
                 <form class="search_bar" action="/search" method="get" >
                 <input type="text" name="sphrase" id="search_phrase" required>
                 <input type="submit" value="Search">
             </td>
-
         </tr>
     </table>
 {% if sorted_questions %}
     <h2>Questions: </h2>
-    <table class="data_table">
+    <table class="table_list">
     <thead>
 
     <tr>
