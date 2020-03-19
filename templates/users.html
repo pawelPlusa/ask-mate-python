@@ -26,8 +26,18 @@
     </thead>
     {% for line in users_data: %}
         <tr>
-            {% for single_data in line.values(): %}
-            <td> {{single_data}}</td>
+            {% for key, value in line.items(): %}
+                    {% if key != 'user_name' %}
+                        <td>
+                            {{value}}
+                        </td>
+                    {% else %}
+                        <td><a href="/users/{{line["user_id"]}}">{{value}}</a></td>
+                    {% endif %}
+
+
+
+
             {% endfor %}
         </tr>
     {% endfor %}
@@ -136,7 +146,7 @@
         {% endif %}
 
 
-<p>"user darta"</p>
+
     {% else %}
     <h1> {{message}}</h1>
     {% endif %}

@@ -295,27 +295,10 @@ def show_users(user_id=None):
         "single_user_comments": util.change_time_format(data_manager.get_from_table_condition(
                                 "comment", {"user_id":user_id}, comment_columns))
         }
-        # data_to_pass = {"single_user_data": single_user_data, "single_user_questions": single_user_questions}
-        # single_user_data = util.change_time_format(data_manager.get_all_user_data(int(user_id)), "registration_date")
-        #
-        # single_user_questions = data_manager.get_from_table_condition("question", {"user_id":user_id}, question_columns)
-        # answer_columns = "id, submission_time, vote_number, message, accepted"
-        # single_user_answers = data_manager.get_from_table_condition("answer", {"user_id":user_id}, answer_columns)
-        # comment_columns = "id, submission_time, message"
-        # single_user_comments = data_manager.get_from_table_condition("comment", {"user_id":user_id}, comment_columns)
-        print(all_single_user_data)
-        # print(single_user_questions)
-        # print(single_user_answers)
-        # print(single_user_comments)
-
-
-
 
         return render_template("users.html", user_data=all_single_user_data)
 
-
     users_data = data_manager.get_all_user_data()
-
     headers = (list(users_data[0].keys()))
     return render_template("users.html", users_data=util.change_time_format(users_data, "registration_date"),
                            headers=headers)
