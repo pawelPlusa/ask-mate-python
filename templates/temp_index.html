@@ -3,39 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>ASK MATE</title>
-    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="temp_style.css") }}'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="temp_style.css") }}'>
 </head>
 <body>
     <div class="container">
-        <div class="row rounded-pill">
-            <div class="col-2">
-                <img src="/static/images/askmate_logo.png" class="logo" alt="logo">
-            </div>
-            <div class="col-2">
-                <a href="/list"> Show all questions </a>
-            </div>
-            <div class="col-2">
-                <a href="/note"> Add question </a>
-            </div>
-            <div class="col-2">
-                <a href="{{ url_for("user_registration")}}"> Registration </a>
-            </div>
-            <div class="col-2">
+        <div class="row">
+
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <a class="navbar-brand" href="#">
+                    <img src="/static/images/askmate_logo.png" class="logo" alt="logo">
+                </a>
+                 <a class="navbar-brand" href="/list"> Show all questions </a>
+                 <a class="navbar-brand" href="/note"> Add question </a>
+                 <a class="navbar-brand" href="{{ url_for("user_registration")}}"> Registration </a>
+
                 {% if session %}
-            <a href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
+            <a class="navbar-brand" href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
             {% else %}
-            <a href="{{ url_for("user_login")}}"> Log in </a>
+            <a class="navbar-brand" href="{{ url_for("user_login")}}"> Log in </a>
             {% endif %}
-            </div>
-            <div class="col-2">
-                <form class="search_bar" action="/search" method="get" >
-                    <input type="text" name="sphrase" id="search_phrase" required>
-                    <input type="submit" value="Search">
+                <form class="form-inline mr-sm-2" action="/search" method="get">
+                    <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search" name="sphrase" id="search_phrase" required >
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div>
+
+
+
             </div>
         </div>
-    <a></a>
         <div class="row">
             <div class="col-12">
            <table>
