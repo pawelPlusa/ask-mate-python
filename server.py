@@ -44,9 +44,7 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
             pass
 
         else:
-            answers_id_with_q_id = data_manager.get_from_table_condition("answer", {"question_id": question_id}, "id")
-            for single_answer_id in answers_id_with_q_id:
-                data_manager.delete_data_in_table("comment", single_answer_id)
+            data_manager.delete_data_in_table("question", {"id": int(question_id)})
 
         status = True
 
