@@ -1,0 +1,44 @@
+body {
+    background: #f8f9fa;
+}
+
+tr {
+    text-align: center;
+    border-bottom: black;
+
+
+}
+
+td {
+    text-align: left;
+    padding: 0.5em;
+    background: #c2c2c2;
+
+}
+thead {
+    background: #878787;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
+
+table {
+    font-size: 0.8em;
+    width: 100%;
+    margin: auto;
+    background: #ddd;
+    text-align: justify;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: auto;
+}
+
+.logo {
+    max-height: 180px;
+    max-width: 80px;
+}
+.logo_user {
+    max-height: 50px;
+    max-width: 50px;
+
+}

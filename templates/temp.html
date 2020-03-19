@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link type="text/css" rel="stylesheet" href='{{ url_for("static", filename="style.css") }}'>
+    <meta charset="UTF-8">
+    <title>Question list<</title>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td>
+                <a class="a_at_list" href="/note"> Add question </a>
+            </td>
+            <td>
+                <form class="search_bar" action="/search" method="get" >
+                <input type="text" name="sphrase" id="search_phrase" required>
+                <input type="submit" value="Search">
+            </td>
+        </tr>
+    </table>
+{% if sorted_questions %}
+    <h2>Questions: </h2>
+    <table class="table_list">
+    <thead>
+
+    <tr>
+        {% for key in sorted_questions[0].keys()%}
+            {% if key == "submission_time" or key == "vote_number" or key == "message" or key == "view_number" or key == "title" %}
+             <td><a href="/list/{{ key }}/{{ '0' if direction else '1'}}">
+                        {{ key.replace('_', ' ').title() }}
+                        </a>
+             </td>
+            {% elif key == "message" or key == "image" %}
+            <th> {{key}} </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </thead>
+    {% for line in sorted_questions: %}
+        <tr>
+            <td> {{line["submission_time"]}}</td>
+            <td> {{line["view_number"]}} </td>
+            <td> {{line["vote_number"]}} <a class="vote_button" href="/list/{{line["id"]}}/vote_up">
+                <img src='/static/images/ar_up.png' alt="up_arrow" width="15px"></a>
+                <a class="vote_button" href="/list/{{line["id"]}}/vote_down">
+                    <img src='/static/images/ar_down.png' alt="down_arrow" width="15px"></a>
+            </td>
+            <td>
+                <a href="/questions/{{line["id"]}}"> {{line["title"]}}</a>
+            </td>
+            <td class="line_message"> {{line["message"]}}</td>
+            <td> {{line["image"]}}</td>
+
+            <td><a href="/delete/{{line["id"]}}">
+                <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <h1> {{message}}</h1>
+{% endif %}
+<a class="a_at_list" href="/"> Back to main page </a>
+</div>
+
+</body>
+</html>

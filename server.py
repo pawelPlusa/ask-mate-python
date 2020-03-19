@@ -30,7 +30,6 @@ def start():
 @app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
 def delete(question_id, confirmation=None, answer_id=None, status=None, question_tag_id=None):
 
-    # util.action_if_not_logged()
     if "username" not in session:
         return render_template("redirect.html",
                                why_redirected_text="You are not logged in",
@@ -44,6 +43,7 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
             pass
 
         else:
+
             data_manager.delete_data_in_table("question", {"id": int(question_id)})
 
         status = True
@@ -62,9 +62,13 @@ def show_questions_list(question_id=None, vote=None, table="question"):
         if "username" not in session:
             return render_template("redirect.html", why_redirected_text="You are not logged in",
                                    where_redirect="log_in", time=2)
+
         util.check_if_vote(table, question_id, vote)
         return redirect("/vote_given", code=303)
-    return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list), session=session)
+
+    return render_template("list.html",
+                           sorted_questions=util.change_time_format(sorted_question_list),
+                           session=session)
 
 
 @app.route("/search")
@@ -189,7 +193,6 @@ def add_question(message=None, title=None, question_id=None, table="question"):
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
 
-    # print(util.action_if_not_logged())
     if request.method == 'GET' and question_id:
         single_row = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
         title = single_row["title"]
@@ -219,6 +222,7 @@ def add_question(message=None, title=None, question_id=None, table="question"):
 
     return render_template('note.html', message=message, title=title, question_id=question_id, session=session)
 
+
 @app.route("/vote_given/<int:question_id>")
 @app.route("/vote_given")
 def thank_you(question_id=None):
@@ -226,6 +230,7 @@ def thank_you(question_id=None):
         return render_template("vote_given.html", question_id=question_id)
     else:
         return render_template("vote_given.html")
+
 
 @app.route("/registration", methods=["GET", "POST"])
 def user_registration():
@@ -257,11 +262,13 @@ def user_login():
         return render_template("login.html")
 
     else:
-        try:
-            user_data = data_manager.get_from_table_condition("users", {"login": request.form["email"]})[0]
-        except:
+        user_data = data_manager.get_from_table_condition("users", {"login": request.form["email"]})
+
+        if not user_data:
             return render_template("redirect.html", why_redirected_text="Wrong username or password",
                                     where_redirect="log_in", time=2)
+
+        user_data = user_data[0]
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
             session['username'] = user_data["user_name"]
