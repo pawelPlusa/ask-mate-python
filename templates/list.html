@@ -9,17 +9,19 @@
 <body>
 <h2>Question list: </h2>
 
-<table class="menu_list"><tr>
+<table class="menu_list">
+    <tr>
     <form id="search_box" action="/search" method="get">
         <input type="text" name="sphrase" id="search_phrase" required>
         <input type="submit" value="Search">
     <td><a class="a_at_list" href="/note"> Add question </a></td>
 <p></p>
+    </tr>
 
-</tr>
     <tr>
 <td><a class="a_at_list" href="/"> Back to main page </a></td>
-</tr></table>
+</tr>
+</table>
 {% if sorted_questions %}
     <table class="table_list">
     <thead>

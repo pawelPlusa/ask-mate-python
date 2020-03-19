@@ -35,32 +35,39 @@
         <input type="text" name="sphrase" id="search_phrase" required>
         <input type="submit" value="Search">
     </form>
-    <h2>Last five questions were :</h2>
 
-    <table class="table_all">
-        <thead>
-            <tr>
-                {% for header in headers %}
-                    <th>{{(header.replace("_"," ").strip().title())}}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for dict in sorted_questions[:5] %}
-                <tr>  </tr>
-                     {% for key,value in dict.items() %}
-                        {% if key in headers %}
-                            <td>{% if key.strip() == "title" %}
-                                    <a href="/questions/{{dict['id']}}">{{value}}</a>
-                                    {% else %}
-                                {{value}}
-                            </td>
-                                {% endif %}
-                        {% endif %}
+    {% if sorted_questions %}
+        <h2>Last five questions were :</h2>
+
+        <table class="table_all">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                        <th>{{(header.replace("_"," ").strip().title())}}</th>
                     {% endfor %}
-            {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dict in sorted_questions[:5] %}
+                    <tr>  </tr>
+                         {% for key,value in dict.items() %}
+                            {% if key in headers %}
+                                <td>{% if key.strip() == "title" %}
+                                        <a href="/questions/{{dict['id']}}">{{value}}</a>
+                                        {% else %}
+                                    {{value}}
+                                </td>
+                                    {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <h2>There are no questions</h2>
+    {% endif %}
+
     </div>
 </body>
 </html>

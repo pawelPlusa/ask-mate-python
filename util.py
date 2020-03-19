@@ -3,7 +3,7 @@ This module defines additional functions.
 """
 
 import copy, data_manager, bcrypt
-from flask import Flask, render_template, session, request
+
 """
 FUNCTIONS FROM SPRINT#3
 """
