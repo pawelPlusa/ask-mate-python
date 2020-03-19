@@ -17,11 +17,18 @@ def start():
                            )
 
 
+
 @app.route("/delete/<question_id>")
 @app.route("/delete/<question_id>/<int:confirmation>")
 @app.route("/delete/answer/<question_id>/<answer_id>")
 @app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
 def delete(question_id, confirmation=None, answer_id=None, status=None, question_tag_id=None):
+
+    # util.action_if_not_logged()
+    if "username" not in session:
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                        where_redirect="log_in")
+
 
     if confirmation:
         if answer_id:
@@ -44,7 +51,7 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
 
         status = True
 
-    return render_template("delete.html", question_id=question_id, answer_id=answer_id, status=status)
+    return render_template("delete.html", question_id=question_id, answer_id=answer_id, status=status, session=session)
 
 
 @app.route("/list")
@@ -55,9 +62,12 @@ def show_questions_list(question_id=None, vote=None, table="question"):
     sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
 
     if vote:
+        if "username" not in session:
+            return render_template("redirect.html", why_redirected_text="You are not logged in",
+                                   where_redirect="log_in")
         util.check_if_vote(table, question_id, vote)
         return redirect("/vote_given", code=303)
-    return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list))
+    return render_template("list.html", sorted_questions=util.change_time_format(sorted_question_list), session=session)
 
 
 @app.route("/search")
@@ -91,7 +101,7 @@ def show_questions(sorted_by,direction, table="question"):
 
     return render_template("list.html",
                            sorted_questions=util.change_time_format(sorted_questions),
-                           direction=direction)
+                           direction=direction, session=session)
 
 
 @app.route("/questions/<question_id>")
@@ -106,7 +116,8 @@ def show_question(question_id):
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=util.change_time_format(answers))
+                           question_message=question_message, answers=util.change_time_format(answers),
+                           session=session)
 
 
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
@@ -120,6 +131,9 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
     question_message = given_question["message"]
 
     if vote:
+        if "username" not in session:
+            return render_template("redirect.html", why_redirected_text="You are not logged in",
+                                   where_redirect="log_in")
         util.check_if_vote("answer", answer_id, vote)
         return redirect("/vote_given/"+question_id, code=303)
 
@@ -131,12 +145,16 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
                            question_message=question_message, answers=util.change_time_format(answers) ,
-                           direction=direction)
+                           direction=direction, session=session)
 
 
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
+
+    if "username" not in session:
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                                where_redirect="log_in")
 
     given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
     question_title = given_question["title"]
@@ -162,13 +180,18 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 
     return render_template('answer.html',
                            answer_id=answer_id, answer_message=answer_message,
-                           question_title=question_title)
+                           question_title=question_title, session=session)
 
 
 @app.route("/note", methods=['GET', 'POST'])
 @app.route("/note/<question_id>", methods=['GET', 'POST'])
 def add_question(message=None, title=None, question_id=None, table="question"):
 
+    if "username" not in session:
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                        where_redirect="log_in")
+
+    # print(util.action_if_not_logged())
     if request.method == 'GET' and question_id:
         single_row = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
         title = single_row["title"]
@@ -195,7 +218,7 @@ def add_question(message=None, title=None, question_id=None, table="question"):
 
         return redirect('/list')
 
-    return render_template('note.html', message=message, title=title, question_id=question_id)
+    return render_template('note.html', message=message, title=title, question_id=question_id, session=session)
 
 @app.route("/vote_given/<int:question_id>")
 @app.route("/vote_given")
