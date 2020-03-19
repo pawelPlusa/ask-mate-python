@@ -32,45 +32,6 @@
             {% endif %}
 
 
-</table>
-    <form class="search_bar" action="/search" method="get" >
-        <input type="text" name="sphrase" id="search_phrase" required>
-        <input type="submit" value="Search">
-    </form>
-
-    {% if sorted_questions %}
-        <h2>Last five questions were :</h2>
-
-        <table class="table_all">
-            <thead>
-                <tr>
-                    {% for header in headers %}
-                        <th>{{(header.replace("_"," ").strip().title())}}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for dict in sorted_questions[:5] %}
-                    <tr>  </tr>
-                         {% for key,value in dict.items() %}
-                            {% if key in headers %}
-                                <td>{% if key.strip() == "title" %}
-                                        <a href="/questions/{{dict['id']}}">{{value}}</a>
-                                        {% else %}
-                                    {{value}}
-                                </td>
-                                    {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                {% endfor %}
-            </tbody>
-        </table>
-
-    {% else %}
-        <h2>There are no questions</h2>
-    {% endif %}
-
-
                 <form class="form-inline mr-sm-2" action="/search" method="get">
                     <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search" name="sphrase" id="search_phrase" required >
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -81,21 +42,21 @@
         <div class="row">
             <div>
 
-
-
             </div>
         </div>
         <div class="row">
             <div class="col-12">
+
+        {% if sorted_questions %}
            <table>
                <thead>
-            <tr>
+               <tr>
                 {% for header in headers %}
                     <th>{{(header.replace("_"," ").strip().title())}}</th>
                 {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
+                </tr>
+                </thead>
+                <tbody>
             {% for dict in sorted_questions[:5] %}
                 <tr>  </tr>
                      {% for key,value in dict.items() %}
@@ -109,8 +70,12 @@
                         {% endif %}
                     {% endfor %}
             {% endfor %}
-        </tbody>
+                </tbody>
            </table>
+
+        {% else %}
+            <p>no questions in database</p>
+        {% endif %}
             </div>
         </div>
 
