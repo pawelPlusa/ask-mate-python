@@ -42,9 +42,9 @@ def check_if_vote(table, id, vote):
 
 
 """
-FUNCTIONS FROM SPRINT#1
+FUNCTIONS FROM SPRINT#1 -time format needs to stay! (at lease until proven that dates can be displayed without it)
 """
-def change_time_format(datafile):
+def change_time_format(datafile, time_column_name="submission_time"):
     """
     Takes list of dicts and changes time format for more human friendly.
     Should be used only when passing data to html
@@ -56,7 +56,7 @@ def change_time_format(datafile):
 
 
     for single_dict in datafile_with_dates:
-        single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")
+        single_dict[time_column_name] = single_dict[time_column_name].strftime("%d %m %Y, %H:%M")
 
     return datafile_with_dates
 

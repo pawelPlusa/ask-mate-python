@@ -269,15 +269,19 @@ def user_login():
 def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout")
-#
-# @app.route("/users")
-# def show_users():
-#     if "username" not in session:
-#         return render_template("redirect.html", why_redirected_text="You are not logged in",
-#                                where_redirect="log_in")
-#
-#     data_to_display = data_manager.
-#
+
+@app.route("/users")
+def show_users():
+    if not session:
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                               where_redirect="log_in")
+    user_data = data_manager.get_all_user_data()
+
+    headers = (list(user_data[0].keys()))
+    return render_template("users.html", user_data=util.change_time_format(user_data, "registration_date"),headers=headers)
+
+
+
 
 
 
