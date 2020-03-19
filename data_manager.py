@@ -92,3 +92,23 @@ def insert_data_to_table(cursor, table_name, data_to_insert):
     insert_query = insert_query.rstrip(', ') + ")"
 
     cursor.execute(insert_query, data_to_insert)
+
+@connection.connection_handler
+def get_all_user_data(cursor):
+    query = """select users.id as user_id,
+               user_name,
+               registration_date,
+               count(q.user_id) as total_questions,
+               count(a.user_id) as total_answers,
+               count(c.user_id) as total_comments,
+               reputation
+               from users
+               left join answer a on users.id = a.user_id
+               left join comment c on users.id = c.user_id
+               left join question q on users.id = q.user_id
+               group by users.id, user_name, registration_date, reputation
+            """
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    return result

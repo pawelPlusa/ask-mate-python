@@ -3,7 +3,7 @@ This module defines additional functions.
 """
 
 import copy, data_manager, bcrypt
-
+from flask import Flask, render_template, session, request
 """
 FUNCTIONS FROM SPRINT#3
 """
@@ -17,6 +17,13 @@ def hash_password(plain_text_password):
 def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+# def action_if_not_logged(info_for_user="You are not logged in", where_redirect="log_in"):
+#     if "username" not in session:
+#         print("fuuuck!!!!")
+#         return "ffffffffffff"
+#         return render_template("redirect.html", why_redirected_text=info_for_user,
+#                         where_redirect=where_redirect)
 
 """
 FUNCTIONS FROM SPRINT#2
@@ -35,9 +42,9 @@ def check_if_vote(table, id, vote):
 
 
 """
-FUNCTIONS FROM SPRINT#1
+FUNCTIONS FROM SPRINT#1 -time format needs to stay! (at lease until proven that dates can be displayed without it)
 """
-def change_time_format(datafile):
+def change_time_format(datafile, time_column_name="submission_time"):
     """
     Takes list of dicts and changes time format for more human friendly.
     Should be used only when passing data to html
@@ -49,7 +56,7 @@ def change_time_format(datafile):
 
 
     for single_dict in datafile_with_dates:
-        single_dict["submission_time"] = single_dict["submission_time"].strftime("%d %m %Y, %H:%M")
+        single_dict[time_column_name] = single_dict[time_column_name].strftime("%d %m %Y, %H:%M")
 
     return datafile_with_dates
 
