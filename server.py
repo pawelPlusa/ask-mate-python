@@ -168,7 +168,8 @@ def add_answer(question_id, answer_id=None, answer_message=None):
             data_to_save = ({'submission_time':  datetime.now(),
                              'vote_number': '0',
                              'question_id': question_id,
-                             'message': util.proper_capitalization(request.form['answer_m'])
+                             'message': util.proper_capitalization(request.form['answer_m']),
+                             'user_id': session["user_id"]
                              })
 
             data_manager.insert_data_to_table("answer", data_to_save)
@@ -203,7 +204,8 @@ def add_question(message=None, title=None, question_id=None, table="question"):
                             'vote_number': 0,
                             'message': util.proper_capitalization(request.form['question_m']),
                             'title': util.proper_capitalization(request.form['title_m']),
-                            'image': None
+                            'image': None,
+                            'user_id': session["user_id"]
                             }
 
             data_manager.insert_data_to_table(table, data_to_save)
@@ -258,6 +260,7 @@ def user_login():
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
             session['username'] = user_data["user_name"]
+            session["user_id"] = user_data["id"]
 
             return render_template("redirect.html", why_redirected_text="You are now logged in")
         return render_template("redirect.html", why_redirected_text="Wrong username or password")
@@ -266,7 +269,15 @@ def user_login():
 def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout")
-
+#
+# @app.route("/users")
+# def show_users():
+#     if "username" not in session:
+#         return render_template("redirect.html", why_redirected_text="You are not logged in",
+#                                where_redirect="log_in")
+#
+#     data_to_display = data_manager.
+#
 
 
 

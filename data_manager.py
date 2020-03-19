@@ -92,3 +92,7 @@ def insert_data_to_table(cursor, table_name, data_to_insert):
     insert_query = insert_query.rstrip(', ') + ")"
 
     cursor.execute(insert_query, data_to_insert)
+
+# @connection.connection_handler
+# def get_all_user_data(cursor):
+#     # query =
