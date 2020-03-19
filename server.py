@@ -48,12 +48,6 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
             for single_answer_id in answers_id_with_q_id:
                 data_manager.delete_data_in_table("comment", single_answer_id)
 
-        """
-            data_manager.delete_data_in_table("comment", {"question_id": int(question_id)})
-            data_manager.delete_data_in_table("answer", {"question_id": int(question_id)})
-            data_manager.delete_data_in_table("question_tag", {"question_id": int(question_id)})
-            data_manager.delete_data_in_table("question", {"id": int(question_id)})
-        """
         status = True
 
     return render_template("delete.html", question_id=question_id, answer_id=answer_id, status=status, session=session)
@@ -173,7 +167,8 @@ def add_answer(question_id, answer_id=None, answer_message=None):
             data_to_save = ({'submission_time':  datetime.now(),
                              'vote_number': '0',
                              'question_id': question_id,
-                             'message': util.proper_capitalization(request.form['answer_m'])
+                             'message': util.proper_capitalization(request.form['answer_m']),
+                             'user_id': session["user_id"]
                              })
 
             data_manager.insert_data_to_table("answer", data_to_save)
@@ -208,7 +203,8 @@ def add_question(message=None, title=None, question_id=None, table="question"):
                             'vote_number': 0,
                             'message': util.proper_capitalization(request.form['question_m']),
                             'title': util.proper_capitalization(request.form['title_m']),
-                            'image': None
+                            'image': None,
+                            'user_id': session["user_id"]
                             }
 
             data_manager.insert_data_to_table(table, data_to_save)
@@ -271,6 +267,7 @@ def user_login():
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
             session['username'] = user_data["user_name"]
+            session["user_id"] = user_data["id"]
 
             return render_template("redirect.html", why_redirected_text="You are now logged in", time=2)
         return render_template("redirect.html", why_redirected_text="Wrong username or password", time=2)
@@ -280,6 +277,18 @@ def user_login():
 def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout", time=2)
+
+
+@app.route("/users")
+def show_users():
+    if "username"not in session:
+        return render_template("redirect.html", why_redirected_text="You are not logged in",
+                               where_redirect="log_in", time=2)
+    user_data = data_manager.get_all_user_data()
+
+    headers = (list(user_data[0].keys()))
+    return render_template("users.html", user_data=util.change_time_format(user_data, "registration_date"),
+                           headers=headers)
 
 
 if __name__ == "__main__":

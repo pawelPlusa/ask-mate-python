@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <link type="text/css" rel="stylesheet" href='{{ url_for("static", filename="style.css") }}'> -->
+    <meta charset="UTF-8">
+    <title>Question list</title>
+</head>
+
+<body>
+<h2>Users list: </h2>
+
+<table class="menu_list">
+    <tr>
+<td><a class="a_at_list" href="/"> Back to main page </a></td>
+</tr></table>
+    {% if user_data %}
+    <table class="table_list">
+    <thead>
+
+    <tr>
+                {% for header in headers %}
+                    <th>{{(header.replace("_"," ").strip().title())}}</th>
+                {% endfor %}
+    </tr>
+    </thead>
+    {% for line in user_data: %}
+        <tr>
+            {% for single_data in line.values(): %}
+            <td> {{single_data}}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+    <h1> {{message}}</h1>
+    {% endif %}
+
+</body>
+</html>
