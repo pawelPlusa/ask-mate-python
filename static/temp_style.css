@@ -1,53 +1,48 @@
-body {
-    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
-    /*background-color: #85ccff;*/
-    padding: 20px;
-    /*width: 80%;*/
-    /*margin-left: 80px;*/
-    /*margin-right: 80px;*/
-    margin: auto;
 
-.top_table {
-    margin: auto;
-    background: #ddd;
-    text-align: left;
-    border-radius: .8em;
-    overflow: hidden;
-    border: 20px solid #ddd;
-    min-width: 98%;
+
+tr {
+    text-align: center;
+    border-bottom: black;
+
+
 }
 
-.data_table {
+td {
+    text-align: left;
+    padding: 0.5em;
+    background: #c2c2c2;
+
+}
+thead {
+    background: #878787;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
+
+table {
+    font-size: 0.8em;
+    width: 100%;
     margin: auto;
     background: #ddd;
     text-align: justify;
-    border-radius: .8em;
     overflow: hidden;
-    border: 20px solid #ddd;
-    min-width: 98%;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: auto;
 }
 
 .logo {
     max-height: 180px;
     max-width: 80px;
-}
 
-.search_bar {
-    margin: auto;
-    padding: 5px;
-    text-align: right;
-}
-
-.button_vote {
-    font-size: 10px;
-    height: 2em;
-    width: 4em;
-    float: right;
-    margin: auto;
-    padding: 0px;
-    text-align: center;
-
-table {
+.top_bar {
     font-size: 0.8em;
-    margin: 1em;
+    width: 100%;
+    margin: auto;
+    background: #ddd;
+    text-align: justify;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: auto;
 }
