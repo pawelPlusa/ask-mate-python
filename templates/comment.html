@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Add comment for {{ "question" if question else "answer" }}</title>
+    <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="style.css") }}'>
+
+</head>
+
+<body>
+    <form method="post">
+    <label id='head' for="question-add-edit">{{ 'Add' if  not question_id else 'Edit' }} question:</label>
+    <p>Title: </p>
+    <p><input type="text" name="title_m" minlength="5" maxlength="50" value="{{title if title}}" required size="40"> </p>
+    <p>Message: </p>
+    <p><textarea id="question-add-edit" name="question_m" rows="8" cols="40">{{ message if message }}</textarea></p>
+    <p><button type="submit">{{ 'Edit' if question_id else 'Add' }}</button></p>
+
+    </form>
+
+</body>
+</html>

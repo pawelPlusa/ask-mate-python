@@ -296,6 +296,17 @@ def show_users():
                            headers=headers)
 
 
+@app.route('/comment/question/<question_id>', methods=['GET', 'POST'])
+@app.route('/comment/answer/<answer_id>', methods=['GET', 'POST'])
+def comment(question_id=None, answer_id=None):
+
+    if request.method == 'GET':
+        render_template('')
+
+    else:
+        pass
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,

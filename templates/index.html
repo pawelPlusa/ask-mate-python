@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>ASK MATE</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="temp_style.css") }}'>
 </head>
 <body>
@@ -21,7 +22,7 @@
                  <a class="navbar-brand" href="{{ url_for("user_registration")}}"> Registration </a>
 
                 {% if session %}
-                <a class="navbar-brand" href="{{ url_for("user_logout")}}"> Logout user: {{session}} </a>
+                <a class="navbar-brand" href="{{ url_for("user_logout")}}"> Logout user: {{ session }} </a>
                 <a class="navbar-brand" href="/users"> User list </a>
                     <a class="navbar-brand" href="/user/<user_id>">
                     <img src="/static/images/user_logo.png" class="logo_user" alt="user">
@@ -33,7 +34,8 @@
 
 
                 <form class="form-inline mr-sm-2" action="/search" method="get">
-                    <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search" name="sphrase" id="search_phrase" required >
+                    <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search"
+                           name="sphrase" id="search_phrase" required >
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </nav>
