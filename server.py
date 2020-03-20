@@ -11,12 +11,12 @@ app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 @app.route("/")
 def start():
     questions = data_manager.get_all_from_given_table("question")
-
+    print(session)
     if questions:
         sorted_questions = sorted(questions, key=lambda i: i['submission_time'], reverse=1)
         return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
                                headers=list(sorted_questions[0].keys())[1:],
-                               session=escape(session["username"]) if 'username' in session else 0
+                               session=session
                                )
 
     else:
@@ -271,7 +271,7 @@ def user_login():
         user_data = user_data[0]
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
         if is_matching:
-            session['username'] = user_data["user_name"]
+            session['username'] = escape(user_data["user_name"])
             session["user_id"] = user_data["id"]
 
             return render_template("redirect.html", why_redirected_text="You are now logged in", time=2)
@@ -283,16 +283,31 @@ def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout", time=2)
 
-
+@app.route("/users/<user_id>")
 @app.route("/users")
-def show_users():
+def show_users(user_id=None):
     if "username"not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
-    user_data = data_manager.get_all_user_data()
+    if user_id:
+        question_columns = "id, submission_time, view_number, vote_number, title, message"
+        answer_columns = "id, question_id, submission_time, vote_number, message, accepted"
+        comment_columns = "id, submission_time, message"
+        all_single_user_data = {
+        "single_user_data": util.change_time_format(data_manager.get_all_user_data(int(user_id)), "registration_date"),
+        "single_user_questions": util.change_time_format(data_manager.get_from_table_condition(
+                                "question", {"user_id":user_id}, question_columns)),
+        "single_user_answers": util.change_time_format(data_manager.get_from_table_condition(
+                                "answer", {"user_id":user_id}, answer_columns)),
+        "single_user_comments": util.change_time_format(data_manager.get_from_table_condition(
+                                "comment", {"user_id":user_id}, comment_columns))
+        }
 
-    headers = (list(user_data[0].keys()))
-    return render_template("users.html", user_data=util.change_time_format(user_data, "registration_date"),
+        return render_template("users.html", user_data=all_single_user_data)
+
+    users_data = data_manager.get_all_user_data()
+    headers = (list(users_data[0].keys()))
+    return render_template("users.html", users_data=util.change_time_format(users_data, "registration_date"),
                            headers=headers)
 
 

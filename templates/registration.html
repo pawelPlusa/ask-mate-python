@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
+
+        <table class="menu_list">
+            <tr>
+                <td><a class="a_at_list" href="/">Back to main page </a></td>
+            </tr>
+        </table>
+        <p></p>
         <form method="post">
 
             <label for="username">Your username: </label>
@@ -14,7 +21,7 @@
                       pattern="*$+@+[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
                       required placeholder="name@example.com"></p>
             <label for="userpass"> Your password </label>
-            <p><input id="password" type="password" name="userpass" minlength="6" required
+            <p><input id="password" type="text" name="userpass" minlength="6" required
                       placeholder="min 6 chars, small & capital letters"
                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$">
             </p>

@@ -101,7 +101,7 @@ def get_columns_names(cursor, table_name):
 
 
 @connection.connection_handler
-def get_all_user_data(cursor):
+def get_all_user_data(cursor, given_user_id=""):
     query = """select users.id as user_id,
                user_name,
                registration_date,
@@ -113,9 +113,15 @@ def get_all_user_data(cursor):
                left join answer a on users.id = a.user_id
                left join comment c on users.id = c.user_id
                left join question q on users.id = q.user_id
-               group by users.id, user_name, registration_date, reputation
-            """
-    cursor.execute(query)
+                """
+    if given_user_id:
+        query += """where users.id = %s
+                """
+    query += """group by users.id, user_name, registration_date, reputation 
+                """
+    condition = (given_user_id,)
+
+    cursor.execute(query, condition)
     result = cursor.fetchall()
 
     return result
