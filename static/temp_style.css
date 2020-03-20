@@ -5,8 +5,11 @@ body {
 tr {
     text-align: left;
     border-bottom: black;
+}
 
-
+div.quick_fix {
+    width: 80%;
+    margin: auto;
 }
 
 td {
