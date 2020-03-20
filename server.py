@@ -10,7 +10,8 @@ app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def start():
-    questions = data_manager.get_all_from_given_table("question")
+    questions = data_manager.get_question_data_with_username()
+    print(questions)
     print(session)
     if questions:
         sorted_questions = sorted(questions, key=lambda i: i['submission_time'], reverse=1)
