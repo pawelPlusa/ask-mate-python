@@ -12,7 +12,7 @@
         <div class="row">
 
             <nav class="navbar navbar-light bg-light justify-content-between">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/">
                     <img src="/static/images/askmate_logo.png" class="logo" alt="logo">
                 </a>
                  <a class="navbar-brand" href="/note"> Add question </a>
@@ -23,7 +23,7 @@
                 <a class="navbar-brand" href="{{ url_for("user_logout")}}"> Logout user: {{session["username"]}} </a>
 
                 <a class="navbar-brand" href="/users"> User list </a>
-                    <a class="navbar-brand" href="/user/{{session["user_id"]}}">
+                    <a class="navbar-brand" href="/users/{{session["user_id"]}}">
                     <img src="/static/images/user_logo.png" class="logo_user" alt="user">
                 </a>
                 {% else %}
@@ -46,16 +46,18 @@
 
     <tr>
         {% for key in sorted_questions[0].keys()%}
-            {% if key == "submission_time" or key == "vote_number" or key == "message" or key == "view_number" or key == "title" %}
+            {% if key == "submission_time" or key == "vote_number" or key == "message" or key == "view_number" or key == "title" or key == "user_name" %}
              <th><a href="/list/{{ key }}/{{ '0' if direction else '1'}}">
                         {{ key.replace('_', ' ').title() }}
                         </a>
              </th>
-            {% elif key == "message" or key == "image" %}
-            <th> {{key}} </th>
-                <th>Delete?</th>
+
+            {% elif key == "delete" %}
+            <th> {{key.replace('_', ' ').title()}} </th>
+
             {% endif %}
         {% endfor %}
+        <th>Delete?</th>
     </tr>
     </thead>
     {% for line in sorted_questions: %}
@@ -71,7 +73,7 @@
                 <a href="/questions/{{line["id"]}}"> {{line["title"]}}</a>
             </td>
             <td class="line_message"> {{line["message"]}}</td>
-            <td> {{line["image"]}}</td>
+            <td> {{line["user_name"]}}</td>
 
             <td><a href="/delete/{{line["id"]}}">
                 <img src='/static/images/delete.png' alt="delete" width="15px" class="delete_button"></a>

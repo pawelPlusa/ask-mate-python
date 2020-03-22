@@ -10,8 +10,8 @@ app.secret_key = b'_5#2211aay2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def start():
-    questions = data_manager.get_all_from_given_table("question")
-    print(session)
+    questions = data_manager.get_question_data_with_username()
+
     if questions:
         sorted_questions = sorted(questions, key=lambda i: i['submission_time'], reverse=1)
         return render_template("index.html", sorted_questions=util.change_time_format(sorted_questions),
@@ -55,7 +55,8 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
 @app.route("/list/<question_id>/<vote>")
 def show_questions_list(question_id=None, vote=None, table="question"):
 
-    question_list = data_manager.get_all_from_given_table(table)
+    # question_list = data_manager.get_all_from_given_table(table)
+    question_list = data_manager.get_question_data_with_username()
     sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
 
     if vote:
@@ -92,7 +93,8 @@ def search_for_questions():
 @app.route("/list/<sorted_by>/<int:direction>")
 def show_questions(sorted_by,direction, table="question"):
 
-    question_list = data_manager.get_all_from_given_table(table)
+    question_list = data_manager.get_question_data_with_username()
+
     sorted_questions = sorted(question_list, key=lambda i: i[sorted_by], reverse=direction)
 
     if sorted_by in ["submission_time", "vote_number", "view_number"]:

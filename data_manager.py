@@ -126,3 +126,22 @@ def get_all_user_data(cursor, given_user_id=""):
 
     return result
 
+@connection.connection_handler
+def get_question_data_with_username(cursor, given_user_id=""):
+    query = """
+           select q.id,
+           submission_time,
+           view_number,
+           vote_number,
+           title,
+           message,
+           image,
+           user_name
+           from question q
+           left join users u on q.user_id = u.id
+            """
+
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    return result
