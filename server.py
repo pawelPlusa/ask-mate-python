@@ -283,6 +283,7 @@ def user_logout():
     session.pop('username', None)
     return render_template("redirect.html", why_redirected_text="You have been logout", time=2)
 
+
 @app.route("/users/<user_id>")
 @app.route("/users")
 def show_users(user_id=None):
@@ -316,7 +317,7 @@ def show_users(user_id=None):
 def comment(question_id=None, answer_id=None):
 
     if request.method == 'GET':
-        render_template('')
+        render_template('add_comment.html')
 
     else:
         pass
