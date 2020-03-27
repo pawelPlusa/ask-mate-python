@@ -21,7 +21,7 @@ def start():
 
     else:
         return render_template("index.html", sorted_questions=None, headers=None,
-                               session=escape(session["username"]) if 'username' in session else 0)
+                               session=escape(session["username"]) if 'username' in session else [0])
 
 
 @app.route("/delete/<question_id>")
