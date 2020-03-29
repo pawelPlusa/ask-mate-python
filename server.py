@@ -325,6 +325,18 @@ def comment(question_id=None, answer_id=None):
         pass
 
 
+@app.errorhandler(404)
+@app.errorhandler(500)
+def server_error(error):
+
+    if error == 404:
+        message = 'page not found'
+    elif error == 500:
+        message = 'internal server error'
+
+    return render_template('error.html', error=error, message='error'), 500
+
+
 if __name__ == "__main__":
     app.run(
         debug=True,
