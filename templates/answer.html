@@ -10,14 +10,16 @@
 
 <body>
     <h3></h3>
-
-
     <form id='add_edit' method="post">
     <label for="add_edit">{{ 'Edit' if answer_id else 'Add' }} answer for question:</label>
         <p>{{ question_title }}</p>
     <textarea id="answer-add-edit" name="answer_m" rows="8" cols="40">{{ answer_message if answer_message }}</textarea>
         <br>
-    <button type="submit">{{ 'Edit' if answer_id else 'Add' }}</button>
+    <p>
+        <button type="submit">{{ 'Edit' if answer_id else 'Add' }}</button>
+        <button type="reset">Reset</button>
+        <button type="button"><a href='/list'>Back</a></button>
+    </p>
     </form>
 
 </body>

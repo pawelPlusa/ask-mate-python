@@ -16,7 +16,8 @@
     <p>Message: </p>
     <p><textarea id="question-add-edit" name="question_m" rows="8" cols="40">{{ message if message }}</textarea></p>
     <p><button type="submit">{{ 'Edit' if question_id else 'Add' }}</button></p>
-
+    <p><button type="reset">Reset</button></p>
+    <p><button type="button"><a href='/list'>Back</a></button></p>
     </form>
 
 </body>

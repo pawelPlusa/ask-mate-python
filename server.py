@@ -29,7 +29,6 @@ def start():
 @app.route("/delete/answer/<question_id>/<answer_id>")
 @app.route("/delete/answer/<question_id>/<answer_id>/<int:confirmation>")
 def delete(question_id, confirmation=None, answer_id=None, status=None, question_tag_id=None):
-
     if "username" not in session:
         return render_template("redirect.html",
                                why_redirected_text="You are not logged in",
@@ -54,7 +53,6 @@ def delete(question_id, confirmation=None, answer_id=None, status=None, question
 @app.route("/list")
 @app.route("/list/<question_id>/<vote>")
 def show_questions_list(question_id=None, vote=None, table="question"):
-
     # question_list = data_manager.get_all_from_given_table(table)
     question_list = data_manager.get_question_data_with_username()
     sorted_question_list = sorted(question_list, key=lambda i: i['submission_time'], reverse=1)
@@ -74,7 +72,7 @@ def show_questions_list(question_id=None, vote=None, table="question"):
 
 @app.route("/search")
 def search_for_questions():
-    message = title = ("%"+request.args.get("sphrase")+"%").lower()
+    message = title = ("%" + request.args.get("sphrase") + "%").lower()
     question_id_from_answers = data_manager.get_from_table_condition_like(
         "answer", {"message": message}, "question_id AS id")
     question_id_from_questions = data_manager.get_from_table_condition_like(
@@ -91,8 +89,7 @@ def search_for_questions():
 
 
 @app.route("/list/<sorted_by>/<int:direction>")
-def show_questions(sorted_by,direction, table="question"):
-
+def show_questions(sorted_by, direction, table="question"):
     question_list = data_manager.get_question_data_with_username()
 
     sorted_questions = sorted(question_list, key=lambda i: i[sorted_by], reverse=direction)
@@ -126,7 +123,6 @@ def show_question(question_id):
 @app.route("/questions/<question_id>/<sorted_by>/<int:direction>")
 @app.route("/questions/vote/<question_id>/<answer_id>/<vote>")
 def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, direction=0):
-
     given_question = data_manager.get_from_table_condition("question", {"id": question_id})[0]
     answers = sorted(data_manager.get_from_table_condition("answer", {"question_id": question_id}),
                      key=lambda i: i["submission_time"], reverse=True)
@@ -138,7 +134,7 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
             return render_template("redirect.html", why_redirected_text="You are not logged in",
                                    where_redirect="log_in", time=2)
         util.check_if_vote("answer", answer_id, vote)
-        return redirect("/vote_given/"+question_id, code=303)
+        return redirect("/vote_given/" + question_id, code=303)
 
     if sorted_by in ["submission_time", "vote_number"]:
         answers.sort(key=lambda item: (item[sorted_by]), reverse=direction)
@@ -147,14 +143,13 @@ def show_answers(question_id, answer_id=None, vote=None, sorted_by=None, directi
 
     return render_template('questions.html',
                            question_id=question_id, question_title=question_title,
-                           question_message=question_message, answers=util.change_time_format(answers) ,
+                           question_message=question_message, answers=util.change_time_format(answers),
                            direction=direction, session=session)
 
 
 @app.route("/answer/<question_id>", methods=['GET', 'POST'])
 @app.route("/answer/<question_id>/<answer_id>", methods=['GET', 'POST'])
 def add_answer(question_id, answer_id=None, answer_message=None):
-
     if "username" not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
@@ -168,7 +163,7 @@ def add_answer(question_id, answer_id=None, answer_message=None):
                             'submission_time': datetime.now()}
             data_manager.update_data_in_table("answer", data_to_save, {"id": answer_id})
         else:
-            data_to_save = ({'submission_time':  datetime.now(),
+            data_to_save = ({'submission_time': datetime.now(),
                              'vote_number': '0',
                              'question_id': question_id,
                              'message': util.proper_capitalization(request.form['answer_m']),
@@ -190,13 +185,12 @@ def add_answer(question_id, answer_id=None, answer_message=None):
 @app.route("/note", methods=['GET', 'POST'])
 @app.route("/note/<question_id>", methods=['GET', 'POST'])
 def add_question(message=None, title=None, question_id=None, table="question"):
-
     if "username" not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
 
     if request.method == 'GET' and question_id:
-        single_row = data_manager.get_from_table_condition("question", {"id" : question_id})[0]
+        single_row = data_manager.get_from_table_condition("question", {"id": question_id})[0]
         title = single_row["title"]
         message = single_row["message"]
     elif request.method == 'POST':
@@ -236,7 +230,6 @@ def thank_you(question_id=None):
 
 @app.route("/registration", methods=["GET", "POST"])
 def user_registration():
-
     if request.method == "GET":
         return render_template("registration.html")
     else:
@@ -268,7 +261,7 @@ def user_login():
 
         if not user_data:
             return render_template("redirect.html", why_redirected_text="Wrong username or password",
-                                    where_redirect="log_in", time=2)
+                                   where_redirect="log_in", time=2)
 
         user_data = user_data[0]
         is_matching = util.verify_password(request.form["userpass"], user_data["password"])
@@ -289,7 +282,7 @@ def user_logout():
 @app.route("/users/<user_id>")
 @app.route("/users")
 def show_users(user_id=None):
-    if "username"not in session:
+    if "username" not in session:
         return render_template("redirect.html", why_redirected_text="You are not logged in",
                                where_redirect="log_in", time=2)
     if user_id:
@@ -297,13 +290,14 @@ def show_users(user_id=None):
         answer_columns = "id, question_id, submission_time, vote_number, message, accepted"
         comment_columns = "id, submission_time, message"
         all_single_user_data = {
-        "single_user_data": util.change_time_format(data_manager.get_all_user_data(int(user_id)), "registration_date"),
-        "single_user_questions": util.change_time_format(data_manager.get_from_table_condition(
-                                "question", {"user_id":user_id}, question_columns)),
-        "single_user_answers": util.change_time_format(data_manager.get_from_table_condition(
-                                "answer", {"user_id":user_id}, answer_columns)),
-        "single_user_comments": util.change_time_format(data_manager.get_from_table_condition(
-                                "comment", {"user_id":user_id}, comment_columns))
+            "single_user_data": util.change_time_format(data_manager.get_all_user_data(int(user_id)),
+                                                        "registration_date"),
+            "single_user_questions": util.change_time_format(data_manager.get_from_table_condition(
+                "question", {"user_id": user_id}, question_columns)),
+            "single_user_answers": util.change_time_format(data_manager.get_from_table_condition(
+                "answer", {"user_id": user_id}, answer_columns)),
+            "single_user_comments": util.change_time_format(data_manager.get_from_table_condition(
+                "comment", {"user_id": user_id}, comment_columns))
         }
 
         return render_template("users.html", user_data=all_single_user_data)
@@ -318,6 +312,8 @@ def show_users(user_id=None):
 @app.route('/comment/answer/<answer_id>', methods=['GET', 'POST'])
 def comment(question_id=None, answer_id=None):
 
+    # TODO: Finish this function
+
     if request.method == 'GET':
         render_template('add_comment.html')
 
@@ -328,13 +324,7 @@ def comment(question_id=None, answer_id=None):
 @app.errorhandler(404)
 @app.errorhandler(500)
 def server_error(error):
-
-    if error == 404:
-        message = 'page not found'
-    elif error == 500:
-        message = 'internal server error'
-
-    return render_template('error.html', error=error, message='error'), 500
+    return render_template('error.html', error=error), 404
 
 
 if __name__ == "__main__":

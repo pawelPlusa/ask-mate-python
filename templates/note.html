@@ -12,11 +12,14 @@
     <form method="post">
     <label id='head' for="question-add-edit">{{ 'Add' if  not question_id else 'Edit' }} question:</label>
     <p>Title: </p>
-    <p><input type="text" name="title_m" minlength="5" maxlength="50" value="{{title if title}}" required size="40"> </p>
+    <p><input type="text" name="title_m" minlength="5" maxlength="50" value="{{title if title}}" required size="40"></p>
     <p>Message: </p>
     <p><textarea id="question-add-edit" name="question_m" rows="8" cols="40">{{ message if message }}</textarea></p>
-    <p><button type="submit">{{ 'Edit' if question_id else 'Add' }}</button></p>
-
+    <p>
+        <button type="submit">{{ 'Edit' if question_id else 'Add' }}</button>
+        <button type="reset">Reset</button>
+        <button type="button"><a href='/list'>Back</a></button>
+    </p>
     </form>
 
 </body>
